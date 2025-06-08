@@ -1,12 +1,41 @@
-# Compiled files
-*.exe
-*.out
-*.o
-*.obj
-*.json
-# Directories
+# Environment variables
+.env
+.env.local
+.env.*.local
+
+# Ignore build artifacts
+build/
 bin/
 obj/
+.cache/
 
+# Ignore testing data
+testData/
+
+# Optional: ignore distribution packages (uncomment if built dynamically)
+# dist/
+
+# Compiled object files
+*.o
+*.obj
+
+# Executables (if built in root accidentally)
+PlantCareApp
+*.exe
+*.out
+
+# Editor/IDE files
+*.swp
+*.swo
+*~
 .vscode/
-/build/
+.idea/
+
+# OS-generated files
+.DS_Store
+Thumbs.db
+
+# Make backup files
+*.bak
+*.tmp
+
