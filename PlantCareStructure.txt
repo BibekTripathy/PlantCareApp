@@ -1,0 +1,14 @@
+PlantCare/
+├── include/
+│   ├── Plant.h
+│   ├── PlantDatabase.h
+│   ├── CareReminder.h
+│   └── PlantCareApp.h
+├── src/
+│   ├── Plant.cpp
+│   ├── PlantDatabase.cpp
+│   ├── CareReminder.cpp
+│   ├── PlantCareApp.cpp
+│   └── main.cpp
+├── data/
+│   └── plants.db
