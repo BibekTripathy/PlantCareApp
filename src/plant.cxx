@@ -3,6 +3,7 @@
 #include <string>
 #include <sstream>
 #include <fstream>
+#include<algorithm>
 #include "plant.hxx"
 
 void Plants::fetchData(const std::string &filePath)
@@ -142,4 +143,82 @@ void Plants::writeData(const std::string &filePath)
         file << plantData.name << "," << plantData.species << "," << plantData.description << "," << plantData.healthStatus << "\n";
     }
     file.close();
+}
+
+void Plants::searchPlants(const std::string& query){
+     std::vector<plantData> results;
+    std::string lowerQuery = query;
+    std::transform(lowerQuery.begin(), lowerQuery.end(), lowerQuery.begin(), ::tolower);
+
+    for (const auto& plant : database) {
+        std::string lowerName = plant.name;
+        std::string lowerSpecies = plant.species;
+        std::transform(lowerName.begin(), lowerName.end(), lowerName.begin(), ::tolower);
+        std::transform(lowerSpecies.begin(), lowerSpecies.end(), lowerSpecies.begin(), ::tolower);
+
+        if (lowerName.find(lowerQuery) != std::string::npos ||
+            lowerSpecies.find(lowerQuery) != std::string::npos) {
+            results.push_back(plant);
+        }
+    }
+
+    if (results.empty()) {
+        std::cout << "No plants found matching '" << query << "'\n";
+    } else {
+        showFiltered(results);
+    }
+}
+
+void Plants::filterByHealth(const std::string& healthStatus) 
+    {
+    std::vector<plantData> results;
+    std::string lowerStatus = healthStatus;
+    std::transform(lowerStatus.begin(), lowerStatus.end(), lowerStatus.begin(), ::tolower);
+
+    for (const auto& plant : database) {
+        std::string lowerPlantStatus = plant.healthStatus;
+        std::transform(lowerPlantStatus.begin(), lowerPlantStatus.end(), lowerPlantStatus.begin(), ::tolower);
+
+        if (lowerPlantStatus.find(lowerStatus) != std::string::npos) {
+            results.push_back(plant);
+        }
+    }
+
+    if (results.empty()) {
+        std::cout << "No plants with health status '" << healthStatus << "'\n";
+    } else {
+        showFiltered(results);
+    }
+}
+
+void Plants::filterBySpecies(const std::string& species) {
+    std::vector<plantData> results;
+    std::string lowerSpeciesQuery = species;
+    std::transform(lowerSpeciesQuery.begin(), lowerSpeciesQuery.end(), lowerSpeciesQuery.begin(), ::tolower);
+
+    for (const auto& plant : database) {
+        std::string lowerPlantSpecies = plant.species;
+        std::transform(lowerPlantSpecies.begin(), lowerPlantSpecies.end(), lowerPlantSpecies.begin(), ::tolower);
+
+        if (lowerPlantSpecies.find(lowerSpeciesQuery) != std::string::npos) {
+            results.push_back(plant);
+        }
+    }
+
+    if (results.empty()) {
+        std::cout << "No plants of species '" << species << "'\n";
+    } else {
+        showFiltered(results);
+    }
+}
+
+void Plants::showFiltered(const std::vector<plantData>& filteredPlants) {
+    std::cout << "\n=== Filtered Results (" << filteredPlants.size() << " plants) ===\n";
+    for (const auto& plant : filteredPlants) {
+        std::cout << "ID: " << plant.id << "\n"
+                  << "Name: " << plant.name << "\n"
+                  << "Species: " << plant.species << "\n"
+                  << "Health: " << plant.healthStatus << "\n"
+                  << "-----------------------------\n";
+    }
 }

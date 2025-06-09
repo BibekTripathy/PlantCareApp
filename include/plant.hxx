@@ -23,6 +23,10 @@ public:
 	void editPlant();
 	void removePlant(int plantId);
 	void writeData(const std::string& filePath);
+	void searchPlants(const std::string& query);
+    void filterByHealth(const std::string& healthStatus);
+    void filterBySpecies(const std::string& species);
+    void showFiltered(const std::vector<plantData>& filteredPlants);
 };
 
 #endif // !PLANT_HXX
