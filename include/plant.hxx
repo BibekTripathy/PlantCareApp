@@ -17,7 +17,7 @@ public:
 	void startAddPlant();
 	void addPlant(std::string name, std::string species, std::string description, std::string healthStatus) {}
 	void startEditPlant();
-	void editPlant(int plantId) {}
+	void editPlant(int plantId, int propertyId, std::string newData) {}
 	void startRemovePlant();
 	void removePlant(int plantId) {}
 	void writeData(const std::string& filePath) {}
