@@ -5,7 +5,8 @@
 #include <algorithm>
 #include "plant.hxx"
 void Plants::fetchData(const std::string &filePath) {
-    /* code */
+    std::ifstream file(filePath);
+    
 }
 
 void Plants::showDetails() {
