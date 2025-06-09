@@ -23,4 +23,4 @@ public:
 	void writeData(const std::string& filePath) {}
 };
 
-#endif
+#endif // !PLANT_HXX
