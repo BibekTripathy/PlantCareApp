@@ -13,13 +13,13 @@ int main (int argc, char **argv) {
 	plants.fetchData(filePath);
 	while (true) {
 		std::cout
-			<< "Enter choice\n"
 			<< "1 - Show Plant Details\n"
 			<< "2 - Add New Plant\n"
 			<< "3 - Edit Plant\n"
 			<< "4 - Remove Plant\n"
 			<< "5 - Save & Exit\n"
-			<< "6 - Exit w/o Saving\n"
+			<< "6 - Exit without Saving\n"
+			<< "Enter choice: "
 			<< std::flush;
 		char choice{'\0'};
 		std::cin >> choice;
@@ -51,7 +51,7 @@ int main (int argc, char **argv) {
 				return 0;
 			}
 			case '6': {
-				std::cout << "Exiting w/o Saving.\nThanks for using PlantCareApp." << std::endl;
+				std::cout << "Exiting without Saving.\nThanks for using PlantCareApp." << std::endl;
 				return 0;
 			}
 			default: {
