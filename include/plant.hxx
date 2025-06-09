@@ -2,10 +2,10 @@
 #define PLANT_HXX
 
 #include <string>
-#include<vector>
-#include<ctime> /* Migrate to <chrono> later */
+#include <vector>
+#include <ctime> /* Migrate to <chrono> later */
 
-class plant {
+class Plants {
 private:
 	struct plantData {
 		std::string name, species, description, healthStatus;
@@ -13,8 +13,12 @@ private:
 	std::vector<plantData> database;
 public:
 	void fetchData(const std::string& filePath) {}
+	void showDetails();
+	void startAppPlant();
 	void addPlant(std::string name, std::string species, std::string description, std::string healthStatus) {}
+	void startEditPlant();
 	void editPlant(int plantId) {}
+	void startRemovePlant();
 	void removePlant(int plantId) {}
 	void writeData(const std::string& filePath) {}
 };
