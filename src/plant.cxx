@@ -46,6 +46,7 @@ void Plants::addPlant()
 
     database.push_back(newPlant);
     std::cout << "Added plant: " << newPlant.name <<std::endl;
+    std::cout<<"----------------------------------\n";
 }
 
 void Plants::editPlant()
@@ -78,6 +79,7 @@ void Plants::editPlant()
         if (choice == '5')
         {
             std::cout << "Exiting edit mode.\n";
+            std::cout<<"----------------------------------\n";
             break;
         }
 
@@ -111,7 +113,7 @@ void Plants::removePlant(int plantId)
 void Plants::writeData(const std::string &filePath) {
     std::ofstream file(filePath);
     for (const auto& plantData : database){
-        file<<plantData.name<<","<<plantData.species<<","<<plantData.description<<","<<plantData.healthStatus;
+        file<<plantData.name<<","<<plantData.species<<","<<plantData.description<<","<<plantData.healthStatus<<"\n";
     }
     file.close();
 }

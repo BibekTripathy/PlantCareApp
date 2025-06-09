@@ -8,8 +8,8 @@ int main (int argc, char **argv) {
 	Plants plants;
 	std::string filePath{""};
 	std::cout << "Enter address of database (/path/to/database.db): " << std::flush;
-	// getline(cin, filePath);
-	filePath = "testData/database.csv"; // temporary testing data
+	getline(std::cin, filePath);
+	//filePath = "testData/database.csv"; // temporary testing data
 	plants.fetchData(filePath);
 	while (true) {
 		std::cout
