@@ -14,7 +14,7 @@ private:
 public:
 	void fetchData(const std::string& filePath) {}
 	void showDetails();
-	void startAppPlant();
+	void startAddPlant();
 	void addPlant(std::string name, std::string species, std::string description, std::string healthStatus) {}
 	void startEditPlant();
 	void editPlant(int plantId) {}
