@@ -39,9 +39,9 @@ int main (int argc, char **argv) {
 				break;
 			}
 			case '4': {
-				std::cout<<"Enter th
-				e plant ID: "<<std::flush;
-				std::cin>>plantId
+				int plantId;
+				std::cout<<"Enter the plant ID: "<<std::flush;
+				std::cin>>plantId;
 				plants.removePlant(plantId);
 				break;
 			}
