@@ -8,17 +8,19 @@
 class Plants {
 private:
 	struct plantData {
-		std::string name, species, description, healthStatus;
-	};
+    int id;
+    std::string name;
+    std::string species;
+    std::string description;
+    std::string healthStatus;
+};
+
 	std::vector<plantData> database;
 public:
 	void fetchData(const std::string& filePath) {}
 	void showDetails();
-	void startAddPlant();
 	void addPlant(std::string name, std::string species, std::string description, std::string healthStatus) {}
-	void startEditPlant();
-	void editPlant(int plantId, int propertyId, std::string newData) {}
-	void startRemovePlant();
+	void editPlant() {}
 	void removePlant(int plantId) {}
 	void writeData(const std::string& filePath) {}
 };

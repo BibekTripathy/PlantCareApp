@@ -31,15 +31,17 @@ int main (int argc, char **argv) {
 				break;
 			}
 			case '2': {
-				plants.startAddPlant();
+				/* cin parameters */
+				plants.addPlant(//parameters);
 				break;
 			}
 			case '3': {
-				plants.startEditPlant();
+				plants.editPlant();
 				break;
 			}
 			case '4': {
-				plants.startRemovePlant();
+				/* cin parameters */
+				plants.removePlant(//plantid);
 				break;
 			}
 			case '5': {
