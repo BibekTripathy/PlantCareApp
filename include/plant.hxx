@@ -17,12 +17,12 @@ private:
 
 	std::vector<plantData> database;
 public:
-	void fetchData(const std::string& filePath) {}
+	void fetchData(const std::string& filePath);
 	void showDetails();
-	void addPlant(std::string name, std::string species, std::string description, std::string healthStatus) {}
-	void editPlant() {}
-	void removePlant(int plantId) {}
-	void writeData(const std::string& filePath) {}
+	void addPlant();
+	void editPlant();
+	void removePlant(int plantId);
+	void writeData(const std::string& filePath);
 };
 
 #endif // !PLANT_HXX

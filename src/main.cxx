@@ -9,7 +9,7 @@ int main (int argc, char **argv) {
 	std::string filePath{""};
 	std::cout << "Enter address of database (/path/to/database.db): " << std::flush;
 	// getline(cin, filePath);
-	filePath = "testData/databse.db"; // temporary testing data
+	filePath = "testData/database.csv"; // temporary testing data
 	plants.fetchData(filePath);
 	while (true) {
 		std::cout
@@ -31,8 +31,7 @@ int main (int argc, char **argv) {
 				break;
 			}
 			case '2': {
-				/* cin parameters */
-				plants.addPlant(//parameters);
+				plants.addPlant();
 				break;
 			}
 			case '3': {
@@ -40,8 +39,10 @@ int main (int argc, char **argv) {
 				break;
 			}
 			case '4': {
-				/* cin parameters */
-				plants.removePlant(//plantid);
+				std::cout<<"Enter th
+				e plant ID: "<<std::flush;
+				std::cin>>plantId
+				plants.removePlant(plantId);
 				break;
 			}
 			case '5': {

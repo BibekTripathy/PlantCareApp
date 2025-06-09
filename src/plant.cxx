@@ -4,8 +4,7 @@
 #include <fstream>
 #include <algorithm>
 #include "plant.hxx"
-void Plants::fetchData(const std::string &filePath)
-{
+void Plants::fetchData(const std::string &filePath) {
     /* code */
 }
 
@@ -13,17 +12,17 @@ void Plants::showDetails() {
     /* code */
 }
 int nextId = 1;
-void Plants::addPlant(std::string name, std::string species, std::string description, std::string healthStatus)
+void Plants::addPlant()
 {
     plantData newPlant;
+    std::getline(std::cin,newPlant.name);
+    std::getline(std::cin,newPlant.species);
+    std::getline(std::cin,newPlant.description);
+    std::getline(std::cin,newPlant.healthStatus);
     newPlant.id = nextId++;
-    newPlant.name = name;
-    newPlant.species = species;
-    newPlant.description = description;
-    newPlant.healthStatus = healthStatus;
 
     database.push_back(newPlant);
-    std::cout << "Added plant: " << name << " (ID: " << newPlant.id << ")\n";
+    std::cout << "Added plant: " << newPlant.name << " (ID: " << newPlant.id << ")\n";
 }
 
 void Plants::editPlant()
@@ -86,7 +85,10 @@ void Plants::removePlant(int plantId)
     std::cout << "Plant removed successfully.\n";
 }
 
-void writeData(const std::string &filePath)
-{
-    /* code */
+void Plants::writeData(const std::string &filePath) {
+    std::ofstream file(filePath);
+    for (const auto& plantData : database){
+        file<<plantData.id<<","<<plantData.name<<","<<plantData.species<<","<<plantData.description<<","<<plantData.healthStatus;
+    }
+    file.close();
 }
