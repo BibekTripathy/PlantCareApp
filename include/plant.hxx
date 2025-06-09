@@ -7,14 +7,16 @@
 
 class plant {
 private:
-	std::string name, species, description, healthStatus;
-	std::vector<string> careTips;
-	int wateringFrequencyDays;
-	std::time_t lastWateredDate;
+	struct plantData {
+		std::string name, species, description, healthStatus;
+	};
+	std::vector<plantData> database;
 public:
-	plant(
-		const string& name, const string& species, const string& description, int wateringFrequencyDays
-	);
+	void fetchData(const std::string& filePath) {}
+	void addPlant(std::string name, std::string species, std::string description, std::string healthStatus) {}
+	void editPlant(int plantId) {}
+	void removePlant(int plantId) {}
+	void writeData(const std::string& filePath) {}
 };
 
 #endif
