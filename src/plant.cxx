@@ -1,16 +1,38 @@
 #include <iostream>
 #include <vector>
 #include <string>
+#include <sstream>
 #include <fstream>
 #include <algorithm>
 #include "plant.hxx"
+
 void Plants::fetchData(const std::string &filePath) {
+    std::cout<<"Filepath: "<<filePath<<"\n";
     std::ifstream file(filePath);
-    
+    if(!file.is_open()){
+        std::cout<<"Error opening the file!!\n";
+    }
+    std::string line{""};
+    std::getline(file,line);
+    while(std::getline(file,line)){
+        plantData row;
+        std::stringstream ss(line);
+        std::getline(ss, row.name, ',');
+        std::getline(ss, row.species, ',');
+        std::getline(ss, row.description, ',');
+        std::getline(ss, row.healthStatus, ',');
+        database.push_back(row);
+    }
 }
 
 void Plants::showDetails() {
-    /* code */
+    for(const plantData& plantData : database){
+        std::cout<<"Name: "<<plantData.name<<"\n"
+                <<"Species: "<<plantData.species<<"\n"
+                <<"Description: "<<plantData.description<<"\n"
+                <<"Health Status: "<<plantData.healthStatus<<"\n"
+                <<"----------------------------------\n";
+    }
 }
 //int nextId = 1;
 void Plants::addPlant()
@@ -89,7 +111,7 @@ void Plants::removePlant(int plantId)
 void Plants::writeData(const std::string &filePath) {
     std::ofstream file(filePath);
     for (const auto& plantData : database){
-        file<<plantData.id<<","<<plantData.name<<","<<plantData.species<<","<<plantData.description<<","<<plantData.healthStatus;
+        file<<plantData.name<<","<<plantData.species<<","<<plantData.description<<","<<plantData.healthStatus;
     }
     file.close();
 }
