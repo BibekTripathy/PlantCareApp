@@ -1,24 +1,24 @@
+#include <algorithm>
+#include <fstream>
 #include <iostream>
-#include <vector>
 #include <string>
 #include <sstream>
-#include <fstream>
-#include<algorithm>
+#include <vector>
 #include "plant.hxx"
 
-void Plants::fetchData(const std::string &filePath)
-{
-    std::cout << "Filepath: " << filePath << "\n";
+void Plants::fetchData(const std::string &filePath) {
+    std::cout << "Fetching data from File: " << filePath << "\n";
+
     std::ifstream file(filePath);
-    if (!file.is_open())
-    {
-        std::cout << "Error opening the file!!\n";
+
+    if (!file.is_open()) {
+        std::cerr << "Error opening the file!\n";
         std::exit(1); // Exits program if wrong filepath
     }
+
     std::string line{""};
     std::getline(file, line);
-    while (std::getline(file, line))
-    {
+    while (std::getline(file, line)) {
         plantData row;
         std::stringstream ss(line);
         std::getline(ss, row.name, ',');
@@ -27,12 +27,15 @@ void Plants::fetchData(const std::string &filePath)
         std::getline(ss, row.healthStatus, ',');
         database.push_back(row);
     }
+
+	file.close();
+
+	std::cout << "Data has been fetched successfully!\n";
+	Plants::showDetails();
 }
 
-void Plants::showDetails()
-{
-    for (const plantData &plantData : database)
-    {
+void Plants::showDetails() {
+    for (const plantData &plantData : database) {
         std::cout << "Name: " << plantData.name << "\n"
                   << "Species: " << plantData.species << "\n"
                   << "Description: " << plantData.description << "\n"
@@ -41,86 +44,90 @@ void Plants::showDetails()
     }
 }
 
-void Plants::addPlant()
-{
+void Plants::addPlant() {
     plantData newPlant;
-    std::cout << "Enter new name: " << std::endl;
+
+	std::cout << "Please enter the following details for the new plant:" << std::endl;
+    std::cout << "Name: " << std::flush;
     std::getline(std::cin, newPlant.name);
-    std::cout << "Enter new plant's species: " << std::endl;
+    std::cout << "Species: " << std::flush;
     std::getline(std::cin, newPlant.species);
-    std::cout << "Enter new plant's description: " << std::endl;
+    std::cout << "Description: " << std::flush;
     std::getline(std::cin, newPlant.description);
-    std::cout << "Enter new plant's health status: " << std::endl;
+    std::cout << "Health Status: " << std::flush;
     std::getline(std::cin, newPlant.healthStatus);
+
     database.push_back(newPlant);
+
     std::cout << "Added plant: " << newPlant.name << std::endl;
     std::cout << "----------------------------------\n";
 }
 
-void Plants::editPlant()
-{
-    int plantId;
+void Plants::editPlant() {
+    int plantId{0};
     std::cout << "Enter plant ID to edit: ";
     std::cin >> plantId;
 
-    if (plantId > database.size() || plantId < 1)
-    {
-        std::cout << "Error: Plant with ID " << plantId << " not found.\n";
+    if (plantId > database.size() || plantId < 1) {
+        std::cerr << "Error: Plant with ID `" << plantId << "` not found.\n";
         return;
     }
 
-    while (true)
-    {
-        std::cout << "\n--- Editing Plant ID " << plantId << " ---\n"
-                  << "1. Name: " << database[plantId - 1].name << "\n"
-                  << "2. Species: " << database[plantId - 1].species << "\n"
-                  << "3. Description: " << database[plantId - 1].description << "\n"
-                  << "4. Health Status: " << database[plantId - 1].healthStatus << "\n"
-                  << "5. Exit\n"
-                  << "Choose property to edit (1-5): ";
+    while (true) {
+        std::cout
+			<< "\n--- Editing Plant ID: " << plantId << " ---"
+			<< "\n1. Name: " << database[plantId - 1].name
+			<< "\n2. Species: " << database[plantId - 1].species
+			<< "\n3. Description: " << database[plantId - 1].description
+			<< "\n4. Health Status: " << database[plantId - 1].healthStatus
+			<< "\n5. Exit\n"
+			<< "Choose property to edit (1-5): "
+			<< std::flush;
 
         char choice{'\0'};
         std::cin >> choice;
         std::cin.ignore();
-        if (choice == '5')
-        {
+
+        if (choice == '5') {
             std::cout << "Exiting edit mode.\n";
             std::cout << "----------------------------------\n";
             break;
         }
 
-        if (choice < '1' || choice > '4')
-        {
+        if (choice < '1' || choice > '4') {
             std::cerr << "Invalid choice. Try again.\n";
             continue;
         }
-        std::string newValue;
-        switch (choice)
-        {
-        case '1':
-            std::cout << "New Name: " ;
-            break;
-        case '2':
-            std::cout << "New Species: ";
-            break;
-        case '3':
-            std::cout << "New Description: " ;
-            break;
-        case '4':
-            std::cout << "New HealthStatus: " ;
-            break;
-        default:
-            break;
+
+        std::string newValue{""};
+        switch (choice) {
+			case '1': {
+				std::cout << "New Name: " ;
+				break;
+			}
+			case '2': {
+				std::cout << "New Species: ";
+				break;
+			}
+			case '3': {
+				std::cout << "New Description: " ;
+				break;
+			}
+			case '4': {
+				std::cout << "New HealthStatus: " ;
+				break;
+			}
+			default: {
+				break;
+			}
         }
         std::getline(std::cin, newValue);
     }
 }
 
-void Plants::removePlant(int plantId)
-{
-    if (plantId > database.size())
-    {
-        std::cerr << "Error: Plant with ID " << plantId << " not found.\n";
+void Plants::removePlant(int plantId) {
+    if (plantId > database.size()) {
+        std::cerr << "Error: Plant with ID `" << plantId << "` not found.\n";
         return;
     }
 
@@ -129,18 +136,29 @@ void Plants::removePlant(int plantId)
     std::cout << "Plant removed successfully.\n";
 }
 
-void Plants::writeData(const std::string &filePath)
-{
+void Plants::writeData(const std::string &filePath) {
     std::ofstream file(filePath);
-    for (const auto &plantData : database)
-    {
-        file << plantData.name << "," << plantData.species << "," << plantData.description << "," << plantData.healthStatus << "\n";
+
+    if (!file.is_open()) {
+        std::cerr << "Error opening the file. Changes could not be saved.\n";
+		return;
     }
+
+	file << "name,species,description,healthStatus\n";
+
+    for (const auto &plantData : database) {
+        file
+			<< plantData.name << ","
+			<< plantData.species << ","
+			<< plantData.description << ","
+			<< plantData.healthStatus << "\n";
+    }
+
     file.close();
 }
 
-void Plants::searchPlants(const std::string& query){
-     std::vector<plantData> results;
+void Plants::searchPlants(const std::string& query) {
+    std::vector<plantData> results;
     std::string lowerQuery = query;
     std::transform(lowerQuery.begin(), lowerQuery.end(), lowerQuery.begin(), ::tolower);
 
@@ -157,27 +175,24 @@ void Plants::searchPlants(const std::string& query){
     }
 
     if (results.empty()) {
-        std::cout << "No plants found matching '" << query << "'\n";
+        std::cerr << "Error: No plants found matching: `" << query << "`\n";
     } else {
         showFiltered(results);
     }
 }
 
-void Plants::filterByHealth(const std::string& healthStatus) 
-    {
+void Plants::filterByHealth(const std::string& healthStatus) {
     std::vector<plantData> results;
     std::string lowerStatus = healthStatus;
     for (const auto& plant : database) {
         std::string lowerPlantStatus = plant.healthStatus;
-        std::cout<<lowerPlantStatus<<std::endl<<lowerStatus<<std::endl;
-        if(lowerPlantStatus==lowerStatus)
-        {
+        if (lowerPlantStatus == lowerStatus) {
             results.push_back(plant);
         }
     }
 
     if (results.empty()) {
-        std::cout << "No plants with health status '" << healthStatus << "'\n";
+        std::cerr << "Error: No plants found with matching Health-Status: `" << healthStatus << "`\n";
     } else {
         showFiltered(results);
     }
@@ -198,7 +213,7 @@ void Plants::filterBySpecies(const std::string& species) {
     }
 
     if (results.empty()) {
-        std::cout << "No plants of species '" << species << "'\n";
+        std::cerr << "Error: No plants found with matching Species: `" << species << "`\n";
     } else {
         showFiltered(results);
     }
@@ -207,9 +222,11 @@ void Plants::filterBySpecies(const std::string& species) {
 void Plants::showFiltered(const std::vector<plantData>& filteredPlants) {
     std::cout << "\n=== Filtered Results (" << filteredPlants.size() << " plants) ===\n";
     for (const auto& plant : filteredPlants) {
-        std::cout << "Name: " << plant.name << "\n"
-                  << "Species: " << plant.species << "\n"
-                  << "Health: " << plant.healthStatus << "\n"
-                  << "-----------------------------\n";
+        std::cout
+			<< "\nName: " << plant.name
+			<< "\nSpecies: " << plant.species
+			<< "\nDescription: " << plant.description
+			<< "\nHealth: " << plant.healthStatus
+			<< "\n-----------------------------\n";
     }
 }

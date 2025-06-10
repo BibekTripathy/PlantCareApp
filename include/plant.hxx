@@ -1,19 +1,16 @@
 #ifndef PLANT_HXX
 #define PLANT_HXX
 
+#include <ctime> /* Migrate to <chrono> later */
 #include <string>
 #include <vector>
-#include <ctime> /* Migrate to <chrono> later */
 
 class Plants {
 private:
 	struct plantData {
-    int id;
-    std::string name;
-    std::string species;
-    std::string description;
-    std::string healthStatus;
-};
+		int id;
+		std::string name, species, description, healthStatus;
+	};
 
 	std::vector<plantData> database;
 public:
