@@ -215,8 +215,7 @@ void Plants::filterBySpecies(const std::string& species) {
 void Plants::showFiltered(const std::vector<plantData>& filteredPlants) {
     std::cout << "\n=== Filtered Results (" << filteredPlants.size() << " plants) ===\n";
     for (const auto& plant : filteredPlants) {
-        std::cout << "ID: " << plant.id << "\n"
-                  << "Name: " << plant.name << "\n"
+        std::cout << "Name: " << plant.name << "\n"
                   << "Species: " << plant.species << "\n"
                   << "Health: " << plant.healthStatus << "\n"
                   << "-----------------------------\n";
