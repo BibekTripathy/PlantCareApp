@@ -3,7 +3,7 @@
 #include <vector>
 #include "plant.hxx"
 
-int main(int argc, char **argv) {
+int main([[maybe_unused]]int argc, [[maybe_unused]]char **argv) {
 	std::cout << "Welcome to PlantCareApp.\n";
 
 	Plants plants;

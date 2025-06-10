@@ -68,7 +68,7 @@ void Plants::editPlant() {
     std::cout << "Enter plant ID to edit: ";
     std::cin >> plantId;
 
-    if (plantId > database.size() || plantId < 1) {
+    if (plantId > static_cast<int>(database.size()) || plantId < 1) {
         std::cerr << "Error: Plant with ID `" << plantId << "` not found.\n";
         return;
     }
@@ -126,7 +126,7 @@ void Plants::editPlant() {
 }
 
 void Plants::removePlant(int plantId) {
-    if (plantId > database.size()) {
+    if (plantId > static_cast<int>(database.size())) {
         std::cerr << "Error: Plant with ID `" << plantId << "` not found.\n";
         return;
     }
