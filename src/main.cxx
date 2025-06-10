@@ -19,7 +19,7 @@ int main(int argc, char **argv)
 			<< "2 - Add New Plant\n"
 			<< "3 - Edit Plant\n"
 			<< "4 - Remove Plant\n"
-			<< "5 - Sarch by "
+			<< "5 - Search by properties\n"
 			<< "6 - Save & Exit\n"
 			<< "7 - Exit without Saving\n"
 			<< "Enter choice: "
