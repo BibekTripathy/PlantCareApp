@@ -1,17 +1,33 @@
 #include <ctime>
 #include <iostream>
+#include <string>
 #include <vector>
+#include <QApplication>
+#include <QFileDialog>
+#include <QString>
 #include "plant.hxx"
 
 int main([[maybe_unused]]int argc, [[maybe_unused]]char **argv) {
 	std::cout << "Welcome to PlantCareApp.\n";
-
 	Plants plants;
+	std::cout << "Press Enter to select the database.csv file to fetch the data from: " << std::flush;
+	std::cin.get();
 
-	std::string filePath{""};
-	std::cout << "Enter address of database (/path/to/database.db): " << std::flush;
-	getline(std::cin, filePath);
-	// filePath = "testData/database.csv"; // temporary testing data
+	QApplication app(argc, argv);
+
+	/* Open file-picker to handle input for file address */
+	QString qFilePath = QFileDialog::getOpenFileName(nullptr, "Select a file to load");
+    if (qFilePath.isEmpty()) {
+        // User cancelled
+        return 0;
+    }
+
+    std::string filePath = qFilePath.toStdString();
+
+	/* Old cli-only input handling for file address */
+	// std::string filePath{""};
+	// std::cout << "Enter address of database (/path/to/database.db): " << std::flush;
+	// getline(std::cin, filePath);
 	plants.fetchData(filePath);
 
 	while (true) {
