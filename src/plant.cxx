@@ -40,7 +40,7 @@ void Plants::showDetails()
                   << "----------------------------------\n";
     }
 }
-// int nextId = 1;
+
 void Plants::addPlant()
 {
     plantData newPlant;
@@ -52,8 +52,6 @@ void Plants::addPlant()
     std::getline(std::cin, newPlant.description);
     std::cout << "Enter new plant's health status: " << std::endl;
     std::getline(std::cin, newPlant.healthStatus);
-    // newPlant.id = nextId++;
-
     database.push_back(newPlant);
     std::cout << "Added plant: " << newPlant.name << std::endl;
     std::cout << "----------------------------------\n";
@@ -65,8 +63,6 @@ void Plants::editPlant()
     std::cout << "Enter plant ID to edit: ";
     std::cin >> plantId;
 
-    // auto it = std::find_if(database.begin(), database.end(), [plantId](const plantData &p)
-    //                        { return p.id == plantId; });
     if (plantId > database.size() || plantId < 1)
     {
         std::cout << "Error: Plant with ID " << plantId << " not found.\n";
@@ -99,7 +95,6 @@ void Plants::editPlant()
             continue;
         }
         std::string newValue;
-        // std::cout << "Enter new value: ";
         switch (choice)
         {
         case '1':
@@ -120,10 +115,9 @@ void Plants::editPlant()
         std::getline(std::cin, newValue);
     }
 }
+
 void Plants::removePlant(int plantId)
 {
-    // auto it = std::find_if(database.begin(), database.end(), [plantId](const plantData &p)
-    //                        { return p.id == plantId; });
     if (plantId > database.size())
     {
         std::cerr << "Error: Plant with ID " << plantId << " not found.\n";
@@ -173,13 +167,11 @@ void Plants::filterByHealth(const std::string& healthStatus)
     {
     std::vector<plantData> results;
     std::string lowerStatus = healthStatus;
-    std::transform(lowerStatus.begin(), lowerStatus.end(), lowerStatus.begin(), ::tolower);
-
     for (const auto& plant : database) {
         std::string lowerPlantStatus = plant.healthStatus;
-        std::transform(lowerPlantStatus.begin(), lowerPlantStatus.end(), lowerPlantStatus.begin(), ::tolower);
-
-        if (lowerPlantStatus.find(lowerStatus) != std::string::npos) {
+        std::cout<<lowerPlantStatus<<std::endl<<lowerStatus<<std::endl;
+        if(lowerPlantStatus==lowerStatus)
+        {
             results.push_back(plant);
         }
     }

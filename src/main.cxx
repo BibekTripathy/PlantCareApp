@@ -54,7 +54,7 @@ int main(int argc, char **argv)
 			break;
 		}
 		case '5':
-		{ // Add this as a new option
+		{
 			std::cout << "\nSearch Options:\n"
 					  << "1 - Search by name/species\n"
 					  << "2 - Filter by health status\n"
@@ -77,10 +77,22 @@ int main(int argc, char **argv)
 			case '2':
 			{
 				std::string healthStatus;
-				std::cout << "Enter health status to filter (e.g., 'healthy', 'needs care'): ";
+				std::cout << "Enter health status to filter (e.g., healthy): ";
 				std::getline(std::cin, healthStatus);
 				plants.filterByHealth(healthStatus);
 				break;
+				/*
+				
+				DO NOT BEAUTIFY YOUR FUCKING .csv FILE. 
+				
+				
+				
+				
+				ENSURE THERE ARE NO FUCKING SPACES AFTER UR FUCKING COMMAS.
+
+				PLEASE FUCKING ENSURE THAT.
+				
+				*/
 			}
 			case '3':
 			{
