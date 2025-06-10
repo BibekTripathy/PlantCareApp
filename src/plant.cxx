@@ -35,12 +35,15 @@ void Plants::fetchData(const std::string &filePath) {
 }
 
 void Plants::showDetails() {
+    int id=1;
     for (const plantData &plantData : database) {
-        std::cout << "Name: " << plantData.name << "\n"
+        std::cout << "Id: " << id<<"\n"
+                  << "Name: " << plantData.name << "\n"
                   << "Species: " << plantData.species << "\n"
                   << "Description: " << plantData.description << "\n"
                   << "Health Status: " << plantData.healthStatus << "\n"
                   << "----------------------------------\n";
+                  id++;
     }
 }
 
