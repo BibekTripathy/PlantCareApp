@@ -1,50 +1,85 @@
 #include <algorithm>
-#include <fstream>
 #include <iostream>
+#include <ostream>
 #include <string>
-#include <sstream>
 #include <vector>
 #include "plant.hxx"
+#include <sqlite3.h>
+
+void Plants::openDatabase() {
+    if (sqlite3_open(dbPath.c_str(), &db) != SQLITE_OK) {
+        std::cerr << "Error opening database: " << sqlite3_errmsg(db) << std::endl;
+        exit(1);
+    }
+    createTable();
+}
+
+void Plants::closeDatabase() {
+    if (db) {
+        sqlite3_close(db);
+        db = nullptr;
+    }
+}
+
+void Plants::createTable() {
+    const char* sql = "CREATE TABLE IF NOT EXISTS plants ("
+                      "id INTEGER PRIMARY KEY AUTOINCREMENT,"
+                      "name TEXT NOT NULL,"
+                      "species TEXT NOT NULL,"
+                      "description TEXT,"
+                      "healthStatus TEXT);";
+    executeSQL(sql);
+}
+
+void Plants::executeSQL(const std::string& sql) {
+    char* errMsg = nullptr;
+    if (sqlite3_exec(db, sql.c_str(), nullptr, nullptr, &errMsg) != SQLITE_OK) {
+        std::cerr << "SQL error: " << errMsg << std::endl;
+        sqlite3_free(errMsg);
+    }
+}
 
 void Plants::fetchData(const std::string &filePath) {
-    std::cout << "Fetching data from File: " << filePath << "\n";
-
-    std::ifstream file(filePath);
-
-    if (!file.is_open()) {
-        std::cerr << "Error opening the file!\n";
-        std::exit(1); // Exits program if wrong filepath
+    std::cout << "Fetching data from File."<< std::endl;
+    openDatabase();
+    // Checkfor data in the database
+    const char* sql = "SELECT COUNT(*) FROM plants;";
+    sqlite3_stmt* stmt;
+    
+    if (sqlite3_prepare_v2(db, sql, -1, &stmt, nullptr) != SQLITE_OK) {
+        std::cerr << "Failed to prepare statement: " << sqlite3_errmsg(db) << std::endl;
+        return;
     }
 
-    std::string line{""};
-    std::getline(file, line);
-    while (std::getline(file, line)) {
-        plantData row;
-        std::stringstream ss(line);
-        std::getline(ss, row.name, ',');
-        std::getline(ss, row.species, ',');
-        std::getline(ss, row.description, ',');
-        std::getline(ss, row.healthStatus, ',');
-        database.push_back(row);
+    if (sqlite3_step(stmt) == SQLITE_ROW) {
+        int count = sqlite3_column_int(stmt, 0);
+        std::cout << "Found " << count << " plants in database." << std::endl;
     }
 
-	file.close();
-
-	std::cout << "Data has been fetched successfully!\n";
-	Plants::showDetails();
+    sqlite3_finalize(stmt);
+    showDetails();
 }
 
 void Plants::showDetails() {
-    int id=1;
-    for (const plantData &plantData : database) {
-        std::cout << "Id: " << id<<"\n"
-                  << "Name: " << plantData.name << "\n"
-                  << "Species: " << plantData.species << "\n"
-                  << "Description: " << plantData.description << "\n"
-                  << "Health Status: " << plantData.healthStatus << "\n"
-                  << "----------------------------------\n";
-                  id++;
+    const char* sql = "SELECT id, name, species, description, healthStatus FROM plants;";
+    sqlite3_stmt* stmt;
+    
+    if (sqlite3_prepare_v2(db, sql, -1, &stmt, nullptr) != SQLITE_OK) {
+        std::cerr << "Failed to prepare statement: " << sqlite3_errmsg(db) << std::endl;
+        return;
     }
+    
+    std::cout << "\n=== Plant Database ===\n";
+    while (sqlite3_step(stmt) == SQLITE_ROW) {
+        std::cout << "ID: " << sqlite3_column_int(stmt, 0) << "\n"
+                  << "Name: " << sqlite3_column_text(stmt, 1) << "\n"
+                  << "Species: " << sqlite3_column_text(stmt, 2) << "\n"
+                  << "Description: " << sqlite3_column_text(stmt, 3) << "\n"
+                  << "Health Status: " << sqlite3_column_text(stmt, 4) << "\n"
+                  << "----------------------------------\n";
+    }
+    
+    sqlite3_finalize(stmt);
 }
 
 void Plants::addPlant() {
@@ -60,7 +95,29 @@ void Plants::addPlant() {
     std::cout << "Health Status: " << std::flush;
     std::getline(std::cin, newPlant.healthStatus);
 
-    database.push_back(newPlant);
+    
+    const char* sql = "INSERT INTO plants (name, species, description, healthStatus) "
+                      "VALUES (?, ?, ?, ?);";
+    sqlite3_stmt* stmt;
+    
+    if (sqlite3_prepare_v2(db, sql, -1, &stmt, nullptr) != SQLITE_OK) {
+        std::cerr << "Failed to prepare statement: " << sqlite3_errmsg(db) << std::endl;
+        return;
+    }
+    
+    sqlite3_bind_text(stmt, 1, newPlant.name.c_str(), -1, SQLITE_TRANSIENT);
+    sqlite3_bind_text(stmt, 2, newPlant.species.c_str(), -1, SQLITE_TRANSIENT);
+    sqlite3_bind_text(stmt, 3, newPlant.description.c_str(), -1, SQLITE_TRANSIENT);
+    sqlite3_bind_text(stmt, 4, newPlant.healthStatus.c_str(), -1, SQLITE_TRANSIENT);
+    
+    if (sqlite3_step(stmt) != SQLITE_DONE) {
+        std::cerr << "Error inserting plant: " << sqlite3_errmsg(db) << std::endl;
+    } else {
+        std::cout << "Added plant: " << newPlant.name << " (ID: " 
+                  << sqlite3_last_insert_rowid(db) << ")" << std::endl;
+    }
+    
+    sqlite3_finalize(stmt);
 
     std::cout << "Added plant: " << newPlant.name << std::endl;
     std::cout << "----------------------------------\n";
@@ -70,113 +127,174 @@ void Plants::editPlant() {
     int plantId{0};
     std::cout << "Enter plant ID to edit: ";
     std::cin >> plantId;
+    std::cin.ignore();
 
-    if (plantId > static_cast<int>(database.size()) || plantId < 1) {
-        std::cerr << "Error: Plant with ID `" << plantId << "` not found.\n";
+    const char* checkSql="SELECT COUNT(*) FROM plants WHERE id = ?;";
+    sqlite3_stmt* checkStmt;
+
+    if(sqlite3_prepare_v2(db, checkSql, -1, &checkStmt ,nullptr)!= SQLITE_OK){
+        std::cerr<<"Failed to prepare statement: "<<sqlite3_errmsg(db)<<std::endl;
+        return;
+    }
+
+    sqlite3_bind_int(checkStmt,1,plantId);
+
+    if(sqlite3_step(checkStmt)!= SQLITE_ROW||sqlite3_column_int(checkStmt, 0)==0){
+        std::cerr<<"Error:Plant with ID: "<<plantId<<" not found."<<std::endl;
+        sqlite3_finalize(checkStmt);
         return;
     }
 
     while (true) {
-        std::cout
-			<< "\n--- Editing Plant ID: " << plantId << " ---"
-			<< "\n1. Name: " << database[plantId - 1].name
-			<< "\n2. Species: " << database[plantId - 1].species
-			<< "\n3. Description: " << database[plantId - 1].description
-			<< "\n4. Health Status: " << database[plantId - 1].healthStatus
-			<< "\n5. Exit\n"
-			<< "Choose property to edit (1-5): "
-			<< std::flush;
+        const char* getSql="SELECT name, species,decription, healthstatus FROM plants WHERE id = ?;";
+        sqlite3_stmt* getStmt;
 
+        if(sqlite3_prepare_v2(db, getSql,-1,&getStmt,nullptr)!=SQLITE_OK){
+            std::cerr<<"Failed to prepare statement: "<<sqlite3_errmsg(db)<<std::endl;
+            return;
+        }
+        sqlite3_bind_int(getStmt,1,plantId);
+        sqlite3_step(getStmt);
+        
+        std::cout << "\n--- Editing Plant ID: " << plantId << " ---"
+                  << "\n1. Name: " << sqlite3_column_text(getStmt, 0)
+                  << "\n2. Species: " << sqlite3_column_text(getStmt, 1)
+                  << "\n3. Description: " << sqlite3_column_text(getStmt, 2)
+                  << "\n4. Health Status: " << sqlite3_column_text(getStmt, 3)
+                  << "\n5. Exit\n"
+                  << "Choose property to edit (1-5): "
+                  << std::flush;
+        
+        sqlite3_finalize(getStmt);
         char choice{'\0'};
-        std::cin >> choice;
+        std::cin>>choice;
         std::cin.ignore();
 
-        if (choice == '5') {
-            std::cout << "Exiting edit mode.\n";
-            std::cout << "----------------------------------\n";
+        if(choice=='5'){
+            std::cout<<"Exiting edit mode."<<std::endl;
             break;
         }
-
         if (choice < '1' || choice > '4') {
             std::cerr << "Invalid choice. Try again.\n";
             continue;
         }
-
         std::string newValue{""};
+        std::string columnName;
         switch (choice) {
-			case '1': {
-				std::cout << "New Name: " ;
-				break;
-			}
-			case '2': {
-				std::cout << "New Species: ";
-				break;
-			}
-			case '3': {
-				std::cout << "New Description: " ;
-				break;
-			}
-			case '4': {
-				std::cout << "New HealthStatus: " ;
-				break;
-			}
-			default: {
-				break;
-			}
+            case '1': {
+                std::cout << "New Name: ";
+                columnName = "name";
+                break;
+            }
+            case '2': {
+                std::cout << "New Species: ";
+                columnName = "species";
+                break;
+            }
+            case '3': {
+                std::cout << "New Description: ";
+                columnName = "description";
+                break;
+            }
+            case '4': {
+                std::cout << "New HealthStatus: ";
+                columnName = "healthStatus";
+                break;
+            }
         }
-        std::getline(std::cin, newValue);
+        std::getline(std::cin,newValue);
+        std::string updateSql="UPDATE plants SET "+ columnName +" = ? WHERE id =?;";
+        sqlite3_stmt* updateStmt;
+        if (sqlite3_prepare_v2(db, updateSql.c_str(), -1, &updateStmt, nullptr) != SQLITE_OK) {
+            std::cerr << "Failed to prepare statement: " << sqlite3_errmsg(db) << std::endl;
+            continue;
+        }
+        
+        sqlite3_bind_text(updateStmt, 1, newValue.c_str(), -1, SQLITE_TRANSIENT);
+        sqlite3_bind_int(updateStmt, 2, plantId);
+        
+        if (sqlite3_step(updateStmt) != SQLITE_DONE) {
+            std::cerr << "Error updating plant: " << sqlite3_errmsg(db) << std::endl;
+        } else {
+            std::cout << "Plant updated successfully.\n";
+        }
+        
+        sqlite3_finalize(updateStmt);
     }
 }
 
 void Plants::removePlant(int plantId) {
-    if (plantId > static_cast<int>(database.size())) {
-        std::cerr << "Error: Plant with ID `" << plantId << "` not found.\n";
+    const char* checkSql = "SELECT COUNT(*) FROM plants WHERE id = ?;";
+    sqlite3_stmt* checkStmt;
+    
+    if (sqlite3_prepare_v2(db, checkSql, -1, &checkStmt, nullptr) != SQLITE_OK) {
+        std::cerr << "Failed to prepare statement: " << sqlite3_errmsg(db) << std::endl;
         return;
     }
+    
+    sqlite3_bind_int(checkStmt, 1, plantId);
+    
+    if (sqlite3_step(checkStmt) != SQLITE_ROW || sqlite3_column_int(checkStmt, 0) == 0) {
+        std::cerr << "Error: Plant with ID `" << plantId << "` not found.\n";
+        sqlite3_finalize(checkStmt);
+        return;
+    }
+    sqlite3_finalize(checkStmt);
 
-    std::cout << "Removing plant ID " << plantId << std::endl;
-    database.erase(database.begin() + (plantId - 1));
-    std::cout << "Plant removed successfully.\n";
+    // Delete the plant
+    const char* deleteSql = "DELETE FROM plants WHERE id = ?;";
+    sqlite3_stmt* deleteStmt;
+    
+    if (sqlite3_prepare_v2(db, deleteSql, -1, &deleteStmt, nullptr) != SQLITE_OK) {
+        std::cerr << "Failed to prepare statement: " << sqlite3_errmsg(db) << std::endl;
+        return;
+    }
+    
+    sqlite3_bind_int(deleteStmt, 1, plantId);
+    
+    if (sqlite3_step(deleteStmt) != SQLITE_DONE) {
+        std::cerr << "Error deleting plant: " << sqlite3_errmsg(db) << std::endl;
+    } else {
+        std::cout << "Plant ID " << plantId << " removed successfully.\n";
+    }
+    
+    sqlite3_finalize(deleteStmt); 
 }
 
 void Plants::writeData(const std::string &filePath) {
-    std::ofstream file(filePath);
-
-    if (!file.is_open()) {
-        std::cerr << "Error opening the file. Changes could not be saved.\n";
-		return;
-    }
-
-	file << "name,species,description,healthStatus\n";
-
-    for (const auto &plantData : database) {
-        file
-			<< plantData.name << ","
-			<< plantData.species << ","
-			<< plantData.description << ","
-			<< plantData.healthStatus << "\n";
-    }
-
-    file.close();
+    std::cout << "Changes have been automatically saved to the database.\n";
+    //Can remove function if not needed
 }
 
 void Plants::searchPlants(const std::string& query) {
     std::vector<plantData> results;
-    std::string lowerQuery = query;
-    std::transform(lowerQuery.begin(), lowerQuery.end(), lowerQuery.begin(), ::tolower);
-
-    for (const auto& plant : database) {
-        std::string lowerName = plant.name;
-        std::string lowerSpecies = plant.species;
-        std::transform(lowerName.begin(), lowerName.end(), lowerName.begin(), ::tolower);
-        std::transform(lowerSpecies.begin(), lowerSpecies.end(), lowerSpecies.begin(), ::tolower);
-
-        if (lowerName.find(lowerQuery) != std::string::npos ||
-            lowerSpecies.find(lowerQuery) != std::string::npos) {
-            results.push_back(plant);
-        }
+    const char* sql = "SELECT id, name, species, description, healthStatus FROM plants "
+                      "WHERE LOWER(name) LIKE ? OR LOWER(species) LIKE ?;";
+    sqlite3_stmt* stmt;
+    
+    if (sqlite3_prepare_v2(db, sql, -1, &stmt, nullptr) != SQLITE_OK) {
+        std::cerr << "Failed to prepare statement: " << sqlite3_errmsg(db) << std::endl;
+        return;
     }
-
+    
+    std::string likeQuery = "%" + query + "%";
+    std::transform(likeQuery.begin(), likeQuery.end(), likeQuery.begin(), ::tolower);
+    
+    sqlite3_bind_text(stmt, 1, likeQuery.c_str(), -1, SQLITE_TRANSIENT);
+    sqlite3_bind_text(stmt, 2, likeQuery.c_str(), -1, SQLITE_TRANSIENT);
+    
+    while (sqlite3_step(stmt) == SQLITE_ROW) {
+        plantData plant;
+        plant.id = sqlite3_column_int(stmt, 0);
+        plant.name = reinterpret_cast<const char*>(sqlite3_column_text(stmt, 1));
+        plant.species = reinterpret_cast<const char*>(sqlite3_column_text(stmt, 2));
+        plant.description = reinterpret_cast<const char*>(sqlite3_column_text(stmt, 3));
+        plant.healthStatus = reinterpret_cast<const char*>(sqlite3_column_text(stmt, 4));
+        results.push_back(plant);
+    }
+    
+    sqlite3_finalize(stmt);
+    
     if (results.empty()) {
         std::cerr << "Error: No plants found matching: `" << query << "`\n";
     } else {
@@ -186,35 +304,65 @@ void Plants::searchPlants(const std::string& query) {
 
 void Plants::filterByHealth(const std::string& healthStatus) {
     std::vector<plantData> results;
-    std::string lowerStatus = healthStatus;
-    for (const auto& plant : database) {
-        std::string lowerPlantStatus = plant.healthStatus;
-        if (lowerPlantStatus == lowerStatus) {
-            results.push_back(plant);
-        }
+    const char* sql = "SELECT id, name, species, description, healthStatus FROM plants "
+                      "WHERE healthStatus = ?;";
+    sqlite3_stmt* stmt;
+    
+    if (sqlite3_prepare_v2(db, sql, -1, &stmt, nullptr) != SQLITE_OK) {
+        std::cerr << "Failed to prepare statement: " << sqlite3_errmsg(db) << std::endl;
+        return;
     }
-
+    
+    sqlite3_bind_text(stmt, 1, healthStatus.c_str(), -1, SQLITE_TRANSIENT);
+    
+    while (sqlite3_step(stmt) == SQLITE_ROW) {
+        plantData plant;
+        plant.id = sqlite3_column_int(stmt, 0);
+        plant.name = reinterpret_cast<const char*>(sqlite3_column_text(stmt, 1));
+        plant.species = reinterpret_cast<const char*>(sqlite3_column_text(stmt, 2));
+        plant.description = reinterpret_cast<const char*>(sqlite3_column_text(stmt, 3));
+        plant.healthStatus = reinterpret_cast<const char*>(sqlite3_column_text(stmt, 4));
+        results.push_back(plant);
+    }
+    
+    sqlite3_finalize(stmt);
+    
     if (results.empty()) {
         std::cerr << "Error: No plants found with matching Health-Status: `" << healthStatus << "`\n";
-    } else {
+    }
+    else {
         showFiltered(results);
     }
 }
 
 void Plants::filterBySpecies(const std::string& species) {
     std::vector<plantData> results;
-    std::string lowerSpeciesQuery = species;
-    std::transform(lowerSpeciesQuery.begin(), lowerSpeciesQuery.end(), lowerSpeciesQuery.begin(), ::tolower);
-
-    for (const auto& plant : database) {
-        std::string lowerPlantSpecies = plant.species;
-        std::transform(lowerPlantSpecies.begin(), lowerPlantSpecies.end(), lowerPlantSpecies.begin(), ::tolower);
-
-        if (lowerPlantSpecies.find(lowerSpeciesQuery) != std::string::npos) {
-            results.push_back(plant);
-        }
+     const char* sql = "SELECT id, name, species, description, healthStatus FROM plants "
+                      "WHERE LOWER(species) LIKE ?;";
+    sqlite3_stmt* stmt;
+    
+    if (sqlite3_prepare_v2(db, sql, -1, &stmt, nullptr) != SQLITE_OK) {
+        std::cerr << "Failed to prepare statement: " << sqlite3_errmsg(db) << std::endl;
+        return;
     }
-
+    
+    std::string likeQuery = "%" + species + "%";
+    std::transform(likeQuery.begin(), likeQuery.end(), likeQuery.begin(), ::tolower);
+    
+    sqlite3_bind_text(stmt, 1, likeQuery.c_str(), -1, SQLITE_TRANSIENT);
+    
+    while (sqlite3_step(stmt) == SQLITE_ROW) {
+        plantData plant;
+        plant.id = sqlite3_column_int(stmt, 0);
+        plant.name = reinterpret_cast<const char*>(sqlite3_column_text(stmt, 1));
+        plant.species = reinterpret_cast<const char*>(sqlite3_column_text(stmt, 2));
+        plant.description = reinterpret_cast<const char*>(sqlite3_column_text(stmt, 3));
+        plant.healthStatus = reinterpret_cast<const char*>(sqlite3_column_text(stmt, 4));
+        results.push_back(plant);
+    }
+    
+    sqlite3_finalize(stmt);
+    
     if (results.empty()) {
         std::cerr << "Error: No plants found with matching Species: `" << species << "`\n";
     } else {
@@ -226,10 +374,11 @@ void Plants::showFiltered(const std::vector<plantData>& filteredPlants) {
     std::cout << "\n=== Filtered Results (" << filteredPlants.size() << " plants) ===\n";
     for (const auto& plant : filteredPlants) {
         std::cout
-			<< "\nName: " << plant.name
-			<< "\nSpecies: " << plant.species
-			<< "\nDescription: " << plant.description
-			<< "\nHealth: " << plant.healthStatus
-			<< "\n-----------------------------\n";
+            << "\nID: " << plant.id
+            << "\nName: " << plant.name
+            << "\nSpecies: " << plant.species
+            << "\nDescription: " << plant.description
+            << "\nHealth: " << plant.healthStatus
+            << "\n-----------------------------\n";
     }
 }

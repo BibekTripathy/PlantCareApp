@@ -6,17 +6,21 @@
 #include <QFileDialog>
 #include <QString>
 #include "plant.hxx"
+#include <sqlite3.h>
 
 int main([[maybe_unused]]int argc, [[maybe_unused]]char **argv) {
 	std::cout << "Welcome to PlantCareApp.\n";
 	Plants plants;
-	std::cout << "Press Enter to select the database.csv file to fetch the data from: " << std::flush;
+	std::cout << "Press Enter to select the database file to fetch the data from: " << std::flush;
 	std::cin.get();
 
 	QApplication app(argc, argv);
 
 	/* Open file-picker to handle input for file address */
-	QString qFilePath = QFileDialog::getOpenFileName(nullptr, "Select a file to load");
+	 QString qFilePath = QFileDialog::getOpenFileName(nullptr, 
+        "Select SQLite Database", 
+        "", 
+        "SQLite Database (*.db *.sqlite *.sqlite3);;All Files (*)");
     if (qFilePath.isEmpty()) {
         // User cancelled
         return 0;
@@ -38,7 +42,7 @@ int main([[maybe_unused]]int argc, [[maybe_unused]]char **argv) {
 			<< "4 - Remove Plant\n"
 			<< "5 - Filter Plants\n"
 			<< "6 - Save & Exit\n"
-			<< "7 - Exit without Saving\n"
+			//<< "7 - Exit without Saving\n"
 			<< "Enter choice: "
 			<< std::flush;
 		char choice{'\0'};
@@ -119,10 +123,10 @@ int main([[maybe_unused]]int argc, [[maybe_unused]]char **argv) {
 				return 0;
 			}
 
-			case '7': {
+			/*case '7': {
 				std::cout << "Exiting without Saving.\nThanks for using PlantCareApp." << std::endl;
 				return 0;
-			}
+			} */
 
 			default: {
 				std::cerr << "Invalid Choice!\n";
