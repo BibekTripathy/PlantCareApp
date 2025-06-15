@@ -16,6 +16,9 @@ include_directories(include)
 # Find Qt6
 find_package(Qt6 REQUIRED COMPONENTS Widgets)
 
+# Find sqlite3
+find_package(SQLite3 REQUIRED)
+
 # Enable Qt's meta-object compiler
 set(CMAKE_AUTOMOC ON)
 set(CMAKE_AUTORCC ON)
@@ -29,6 +32,10 @@ add_executable(PlantCareApp ${SOURCES})
 
 # Link Qt6
 target_link_libraries(PlantCareApp PRIVATE Qt6::Widgets)
+
+# Link sqlite3
+target_include_directories(PlantCareApp PRIVATE ${SQLite3_INCLUDE_DIRS})
+target_link_libraries(PlantCareApp PRIVATE ${SQLite3_LIBRARIES})
 
 # Compiler warnings
 target_compile_options(PlantCareApp PRIVATE -Wall -Wextra -O2)
