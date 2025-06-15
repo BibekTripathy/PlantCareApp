@@ -2,11 +2,9 @@
 #include <QApplication>
 #include <QFileDialog>
 #include <QString>
-#include <ctime>
 #include <iostream>
 #include <sqlite3.h>
 #include <string>
-#include <vector>
 
 int main([[maybe_unused]] int argc, [[maybe_unused]] char **argv) {
   std::cout << "Welcome to PlantCareApp.\n";
@@ -42,7 +40,6 @@ int main([[maybe_unused]] int argc, [[maybe_unused]] char **argv) {
               << "4 - Remove Plant\n"
               << "5 - Filter Plants\n"
               << "6 - Save & Exit\n"
-              //<< "7 - Exit without Saving\n"
               << "Enter choice: " << std::flush;
     char choice{'\0'};
     std::cin >> choice;
@@ -116,15 +113,9 @@ int main([[maybe_unused]] int argc, [[maybe_unused]] char **argv) {
     }
     case '6': {
       plants.writeData(filePath);
-      std::cout << "Changes have been Saved.\nThanks for using PlantCareApp."
-                << std::endl;
+      std::cout << "Thanks for using PlantCareApp." << std::endl;
       return 0;
     }
-
-      /*case '7': {
-              std::cout << "Exiting without Saving.\nThanks for using
-      PlantCareApp." << std::endl; return 0;
-      } */
 
     default: {
       std::cerr << "Invalid Choice!\n";
