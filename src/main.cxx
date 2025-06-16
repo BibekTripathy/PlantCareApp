@@ -79,7 +79,8 @@ int main([[maybe_unused]] int argc, [[maybe_unused]] char **argv) {
 				char searchChoice{'\0'};
 				std::cin >> searchChoice;
 				std::cin.ignore();
-
+                
+                /*Filter plant on basis of selected properties*/
 				switch (searchChoice) {
 					case '1': {
 						std::string query;
