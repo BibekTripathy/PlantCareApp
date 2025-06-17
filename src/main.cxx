@@ -5,15 +5,18 @@
 #include <sqlite3.h>
 #include <string>
 #include "plant.hxx"
+#include "mainWindow.hxx"
 
-int main([[maybe_unused]] int argc, [[maybe_unused]] char **argv) {
+int main(int argc, char *argv[]) {
 	std::cout
 		<< "Welcome to PlantCareApp.\n"
 		<< "Press Enter to select the database file to fetch the data from: "
 		<< std::flush;
 	std::cin.get();
 
-	QApplication app(argc, argv);
+	QApplication a(argc, argv);
+	MainWindow w;
+	w.show();
 
 	/* Open file-picker to handle input for file address */
 	QString qFilePath = QFileDialog::getOpenFileName(
@@ -126,5 +129,6 @@ int main([[maybe_unused]] int argc, [[maybe_unused]] char **argv) {
 			}
 		}
 	}
-	return 0;
+	// return 0;
+	return a.exec();
 }
