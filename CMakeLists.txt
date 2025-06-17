@@ -25,10 +25,18 @@ set(CMAKE_AUTORCC ON)
 set(CMAKE_AUTOUIC ON)
 
 # Source files
-file(GLOB_RECURSE SOURCES src/*.cxx)
+set(PROJECT_SOURCES
+	src/main.cxx
+	src/plant.cxx
+	src/mainWindow.cxx
+	include/main.hxx
+	include/plant.hxx
+	include/mainWindow.hxx
+	src/mainWindow.ui
+)
 
 # Define the executable
-add_executable(PlantCareApp ${SOURCES})
+qt_add_executable(PlantCareApp MANUAL_FINALIZATION ${PROJECT_SOURCES})
 
 # Link Qt6
 target_link_libraries(PlantCareApp PRIVATE Qt6::Widgets)
@@ -37,8 +45,14 @@ target_link_libraries(PlantCareApp PRIVATE Qt6::Widgets)
 target_include_directories(PlantCareApp PRIVATE ${SQLite3_INCLUDE_DIRS})
 target_link_libraries(PlantCareApp PRIVATE ${SQLite3_LIBRARIES})
 
+
 # Compiler warnings
 target_compile_options(PlantCareApp PRIVATE -Wall -Wextra -O2)
 
 # Include Debug Symbols
 set(CMAKE_BUILD_TYPE Debug)
+
+# Finalize qt6
+if(QT_VERSION_MAJOR EQUAL 6)
+    qt_finalize_executable(PlantCareApp)
+endif()
