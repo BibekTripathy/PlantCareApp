@@ -8,26 +8,20 @@
 #include "mainWindow.hxx"
 
 int main(int argc, char *argv[]) {
-	std::cout
-		<< "Welcome to PlantCareApp.\n"
-		<< "Press Enter to select the database file to fetch the data from: "
-		<< std::flush;
-	std::cin.get();
+	// std::cout
+	// 	<< "Welcome to PlantCareApp.\n"
+	// 	<< "Press Enter to select the database file to fetch the data from: "
+	// 	<< std::flush;
+	// std::cin.get();
 
-	QApplication a(argc, argv);
-	MainWindow w;
-	w.show();
+	QApplication app(argc, argv);
+	MainWindow window;
+	window.show();
 
-	/* Open file-picker to handle input for file address */
-	QString qFilePath = QFileDialog::getOpenFileName(
-		nullptr, "Select SQLite Database", "",
-		"SQLite Database (*.db *.sqlite *.sqlite3);;All Files (*)");
-	if (qFilePath.isEmpty()) {
-		// User cancelled
-		return 0;
-	}
-
-	std::string filePath = qFilePath.toStdString();
+	/* Main method needs to be rewritten to adjust flow of actions
+	 * due to change in paradigm of code functioning. */
+	/*
+	std::string filePath = window.getAddress();
 
 	Plants plants;
 	plants.fetchData(filePath);
@@ -82,8 +76,9 @@ int main(int argc, char *argv[]) {
 				char searchChoice{'\0'};
 				std::cin >> searchChoice;
 				std::cin.ignore();
-                
+			*/                
                 /*Filter plant on basis of selected properties*/
+			/*
 				switch (searchChoice) {
 					case '1': {
 						std::string query;
@@ -129,6 +124,6 @@ int main(int argc, char *argv[]) {
 			}
 		}
 	}
-	// return 0;
-	return a.exec();
+	*/
+	return app.exec();
 }
