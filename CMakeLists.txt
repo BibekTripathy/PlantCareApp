@@ -10,13 +10,11 @@ set(CMAKE_RUNTIME_OUTPUT_DIRECTORY ${CMAKE_BINARY_DIR}/bin)
 set(CMAKE_ARCHIVE_OUTPUT_DIRECTORY ${CMAKE_BINARY_DIR}/lib)
 set(CMAKE_LIBRARY_OUTPUT_DIRECTORY ${CMAKE_BINARY_DIR}/lib)
 
-# Include directory
-include_directories(include)
+# Include Headers
+target_include_directories(PlantCareAppGUI PUBLIC ${CMAKE_CURRENT_SOURCE_DIR}/include)
 
-# Find Qt6
+# Detect Dependencies
 find_package(Qt6 REQUIRED COMPONENTS Widgets)
-
-# Find sqlite3
 find_package(SQLite3 REQUIRED)
 
 # Enable Qt's meta-object compiler
@@ -29,22 +27,30 @@ set(PROJECT_SOURCES
 	src/main.cxx
 	src/plant.cxx
 	src/mainWindow.cxx
+	src/secondWindow.cxx
+)
+
+# Header Files
+set(HEADER_SOURCES
 	include/main.hxx
 	include/plant.hxx
 	include/mainWindow.hxx
-	src/mainWindow.ui
+	include/secondWindow.hxx
+)
+
+# UI Files
+set(UI_SOURCES
+	ui/mainWindow.ui
+	ui/secondWindow.ui
 )
 
 # Define the executable
-qt_add_executable(PlantCareApp MANUAL_FINALIZATION ${PROJECT_SOURCES})
+qt_add_executable(PlantCareApp MANUAL_FINALIZATION ${PROJECT_SOURCES} ${HEADER_SOURCES} ${UI_SOURCES})
 
-# Link Qt6
+# Link Dependency Libraries
 target_link_libraries(PlantCareApp PRIVATE Qt6::Widgets)
-
-# Link sqlite3
 target_include_directories(PlantCareApp PRIVATE ${SQLite3_INCLUDE_DIRS})
 target_link_libraries(PlantCareApp PRIVATE ${SQLite3_LIBRARIES})
-
 
 # Compiler warnings
 target_compile_options(PlantCareApp PRIVATE -Wall -Wextra -O2)
