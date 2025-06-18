@@ -40,9 +40,11 @@ set(HEADER_SOURCES
 
 # UI Files
 set(UI_SOURCES
-	src/mainWindow.ui
-	src/secondWindow.ui
+	ui/mainWindow.ui
+	ui/secondWindow.ui
 )
+
+set(CMAKE_AUTOUIC_SEARCH_PATHS ${CMAKE_SOURCE_DIR}/ui)
 
 # Define the executable
 qt_add_executable(PlantCareApp MANUAL_FINALIZATION ${PROJECT_SOURCES} ${HEADER_SOURCES} ${UI_SOURCES})
