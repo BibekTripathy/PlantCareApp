@@ -11,7 +11,7 @@ set(CMAKE_ARCHIVE_OUTPUT_DIRECTORY ${CMAKE_BINARY_DIR}/lib)
 set(CMAKE_LIBRARY_OUTPUT_DIRECTORY ${CMAKE_BINARY_DIR}/lib)
 
 # Include Headers
-target_include_directories(PlantCareAppGUI PUBLIC ${CMAKE_CURRENT_SOURCE_DIR}/include)
+include_directories(include)
 
 # Detect Dependencies
 find_package(Qt6 REQUIRED COMPONENTS Widgets)
@@ -40,8 +40,8 @@ set(HEADER_SOURCES
 
 # UI Files
 set(UI_SOURCES
-	ui/mainWindow.ui
-	ui/secondWindow.ui
+	src/mainWindow.ui
+	src/secondWindow.ui
 )
 
 # Define the executable

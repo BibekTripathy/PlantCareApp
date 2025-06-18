@@ -13,28 +13,14 @@
   <property name="windowTitle">
    <string>PlantCareApp</string>
   </property>
-  <widget class="QWidget" name="centralwidget">
-   <widget class="QPushButton" name="selectDbBtn">
-    <property name="geometry">
-     <rect>
-      <x>320</x>
-      <y>250</y>
-      <width>151</width>
-      <height>36</height>
-     </rect>
-    </property>
-    <property name="text">
-     <string>Select Database File</string>
-    </property>
-   </widget>
-  </widget>
+  <widget class="QWidget" name="centralwidget"/>
   <widget class="QMenuBar" name="menubar">
    <property name="geometry">
     <rect>
      <x>0</x>
      <y>0</y>
      <width>800</width>
-     <height>31</height>
+     <height>22</height>
     </rect>
    </property>
   </widget>

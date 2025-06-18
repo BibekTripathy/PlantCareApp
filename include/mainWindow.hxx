@@ -2,6 +2,7 @@
 #define MAINWINDOW_HXX
 
 #include <QMainWindow>
+#include "secondWindow.hxx"
 
 QT_BEGIN_NAMESPACE
 namespace Ui {
@@ -17,12 +18,16 @@ public:
     ~MainWindow();
 	std::string getAddress();
 
+
+protected:
+    void showEvent(QShowEvent *event) override;
+
 private slots:
-	void on_selectDbBtn_clicked();
 
 private:
     Ui::MainWindow *ui;
 	std::string filePath;
+    bool firstShow = true;
 };
 
 #endif // !MAINWINDOW_HXX
