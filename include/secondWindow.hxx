@@ -20,7 +20,8 @@ private:
     Ui::secondwindow *ui;
 
 private slots:
-    void on_selectDB_clicked();
+    void on_BrowseBtn_clicked();
+    void on_SubBtn_clicked();
 };
 
 #endif // SECONDWINDOW_H

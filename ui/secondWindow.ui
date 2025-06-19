@@ -13,17 +13,53 @@
   <property name="windowTitle">
    <string>Dialog</string>
   </property>
-  <widget class="QPushButton" name="selectDB">
+  <widget class="QLabel" name="FP_Label">
    <property name="geometry">
     <rect>
-     <x>110</x>
-     <y>140</y>
-     <width>181</width>
+     <x>40</x>
+     <y>80</y>
+     <width>61</width>
+     <height>16</height>
+    </rect>
+   </property>
+   <property name="text">
+    <string>File Path:</string>
+   </property>
+  </widget>
+  <widget class="QPushButton" name="SubBtn">
+   <property name="geometry">
+    <rect>
+     <x>310</x>
+     <y>200</y>
+     <width>75</width>
      <height>24</height>
     </rect>
    </property>
    <property name="text">
-    <string>selectDB</string>
+    <string>Submit</string>
+   </property>
+  </widget>
+  <widget class="QPushButton" name="BrowseBtn">
+   <property name="geometry">
+    <rect>
+     <x>230</x>
+     <y>200</y>
+     <width>75</width>
+     <height>24</height>
+    </rect>
+   </property>
+   <property name="text">
+    <string>Browse</string>
+   </property>
+  </widget>
+  <widget class="QLineEdit" name="FP_Box">
+   <property name="geometry">
+    <rect>
+     <x>40</x>
+     <y>100</y>
+     <width>321</width>
+     <height>22</height>
+    </rect>
    </property>
   </widget>
  </widget>
