@@ -20,6 +20,7 @@ public:
 
 
 protected:
+    void loadCardsDynamically();
     void showEvent(QShowEvent *event) override;
 
 private slots:

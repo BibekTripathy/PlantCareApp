@@ -5,6 +5,7 @@
 #include <QString>
 #include "mainWindow.hxx"
 #include "ui_mainWindow.h"
+#include "cardtemplate.hxx"
 
 MainWindow::MainWindow(QWidget *parent) : QMainWindow(parent) , ui(new Ui::MainWindow) {
     ui->setupUi(this);
@@ -21,10 +22,36 @@ void MainWindow::showEvent(QShowEvent *event){
         firstShow = false;
         secondwindow *dialog = new secondwindow(this);
         dialog->setModal(true);  
-		dialog->exec();
+		if (dialog->exec() == QDialog::Accepted) {
+            // 👇 Call your function here after dialog gives the file path
+            loadCardsDynamically();  // <-- this is your new function
+        }
     }
 }
 
 std::string MainWindow::getAddress() {
 	return MainWindow::filePath;
+}
+
+void MainWindow::loadCardsDynamically() {
+    QVBoxLayout* layout = qobject_cast<QVBoxLayout*>(ui->cardContainer->layout());
+
+    if (!layout) {
+        qDebug() << "Error: No layout found in cardContainer!";
+        return;
+    }
+
+    // Optional: clear existing cards
+    QLayoutItem* item;
+    while ((item = layout->takeAt(0)) != nullptr) {
+        delete item->widget();
+        delete item;
+    }
+
+    // Dummy card loop — replace with DB data later
+    for (int i = 0; i < 10; ++i) {
+        cardtemplate* card = new cardtemplate(this);
+        // card->setData(...); // optionally set data if you have a method for that
+        layout->addWidget(card);
+    }
 }
