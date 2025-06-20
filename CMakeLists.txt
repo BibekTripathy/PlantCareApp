@@ -28,6 +28,7 @@ set(PROJECT_SOURCES
 	src/plant.cxx
 	src/mainWindow.cxx
 	src/secondWindow.cxx
+	src/cardtemplate.cxx
 )
 
 # Header Files
@@ -36,21 +37,20 @@ set(HEADER_SOURCES
 	include/plant.hxx
 	include/mainWindow.hxx
 	include/secondWindow.hxx
+	include/cardtemplate.hxx
 )
 
 # UI Files
 set(UI_SOURCES
 	ui/mainWindow.ui
 	ui/secondWindow.ui
+	ui/cardtemplate.ui
 )
 
 set(CMAKE_AUTOUIC_SEARCH_PATHS ${CMAKE_SOURCE_DIR}/ui)
 
 # Define the executable
-qt_add_executable(PlantCareApp MANUAL_FINALIZATION ${PROJECT_SOURCES} ${HEADER_SOURCES} ${UI_SOURCES}
-	include/cardtemplate.hxx
-	src/cardtemplate.cxx
-	ui/cardtemplate.ui )
+qt_add_executable(PlantCareApp MANUAL_FINALIZATION ${PROJECT_SOURCES} ${HEADER_SOURCES} ${UI_SOURCES})
 
 # Link Dependency Libraries
 target_link_libraries(PlantCareApp PRIVATE Qt6::Widgets)
