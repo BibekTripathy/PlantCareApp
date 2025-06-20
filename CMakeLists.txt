@@ -47,7 +47,10 @@ set(UI_SOURCES
 set(CMAKE_AUTOUIC_SEARCH_PATHS ${CMAKE_SOURCE_DIR}/ui)
 
 # Define the executable
-qt_add_executable(PlantCareApp MANUAL_FINALIZATION ${PROJECT_SOURCES} ${HEADER_SOURCES} ${UI_SOURCES})
+qt_add_executable(PlantCareApp MANUAL_FINALIZATION ${PROJECT_SOURCES} ${HEADER_SOURCES} ${UI_SOURCES}
+	include/cardtemplate.hxx
+	src/cardtemplate.cxx
+	ui/cardtemplate.ui )
 
 # Link Dependency Libraries
 target_link_libraries(PlantCareApp PRIVATE Qt6::Widgets)
