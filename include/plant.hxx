@@ -16,6 +16,7 @@ private:
 
 
 public:
+	void setFilePath(const std::string &filePath);
 	void fetchData(const std::string &filePath);
 	void openDatabase();
 	void createTable();

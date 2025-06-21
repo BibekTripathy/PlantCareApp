@@ -2,6 +2,7 @@
 #include <QFileDialog>
 #include <QString>
 #include <QMessageBox>
+#include "plant.hxx"
 #include "secondWindow.hxx"
 #include "ui_secondWindow.h"
 
@@ -40,7 +41,8 @@ void secondwindow::on_SubBtn_clicked()
         QMessageBox::warning(this, "No File", "Please select a database file.");
         return;
     }
-
-    filePath = pathText.toStdString();
+    
+    Plants plant;
+    plant.setFilePath(pathText.toStdString());
     accept();
 }

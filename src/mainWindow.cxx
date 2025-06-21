@@ -3,6 +3,7 @@
 #include <QDebug>
 #include <QFileDialog>
 #include <QString>
+#include "plant.hxx"
 #include "mainWindow.hxx"
 #include "ui_mainWindow.h"
 #include "cardtemplate.hxx"
@@ -23,8 +24,7 @@ void MainWindow::showEvent(QShowEvent *event){
         secondwindow *dialog = new secondwindow(this);
         dialog->setModal(true);  
 		if (dialog->exec() == QDialog::Accepted) {
-            // 👇 Call your function here after dialog gives the file path
-            loadCardsDynamically();  // <-- this is your new function
+            loadCardsDynamically();
         }
     }
 }
@@ -41,7 +41,6 @@ void MainWindow::loadCardsDynamically() {
         return;
     }
 
-    // Optional: clear existing cards
     QLayoutItem* item;
     while ((item = layout->takeAt(0)) != nullptr) {
         delete item->widget();
@@ -51,7 +50,6 @@ void MainWindow::loadCardsDynamically() {
     // Dummy card loop — replace with DB data later
     for (int i = 0; i < 10; ++i) {
         cardtemplate* card = new cardtemplate(this);
-        // card->setData(...); // optionally set data if you have a method for that
         layout->addWidget(card);
     }
 }

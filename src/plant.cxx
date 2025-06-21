@@ -4,7 +4,14 @@
 #include <sqlite3.h>
 #include <string>
 #include <vector>
+#include <QDebug>
 #include "plant.hxx"
+
+void Plants::setFilePath(const std::string &filePath){
+    Plants::dbPath=filePath;
+    qDebug()<<"File Path has been set.";
+    qDebug()<<dbPath;
+}
 
 void Plants::closeDatabase() {
     if (db) {
