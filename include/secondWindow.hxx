@@ -14,9 +14,10 @@ class secondwindow : public QDialog
 public:
     explicit secondwindow(QWidget *parent = nullptr);
     ~secondwindow();
+	QString getFilePath() const;
 
 private:
-    std::string filePath;
+    QString filePath;
     Ui::secondwindow *ui;
 
 private slots:
@@ -24,4 +25,4 @@ private slots:
     void on_SubBtn_clicked();
 };
 
-#endif // SECONDWINDOW_H
+#endif // !SECONDWINDOW_HXX

@@ -2,6 +2,7 @@
 #define MAINWINDOW_HXX
 
 #include <QMainWindow>
+#include "plant.hxx"
 #include "secondWindow.hxx"
 
 QT_BEGIN_NAMESPACE
@@ -16,7 +17,6 @@ class MainWindow : public QMainWindow {
 public:
     MainWindow(QWidget *parent = nullptr);
     ~MainWindow();
-	std::string getAddress();
 
 
 protected:
@@ -25,9 +25,11 @@ protected:
 
 private slots:
 
+public slots:
+
 private:
     Ui::MainWindow *ui;
-	std::string filePath;
+	Plants plants;
     bool firstShow = true;
 };
 

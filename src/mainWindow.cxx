@@ -3,10 +3,10 @@
 #include <QDebug>
 #include <QFileDialog>
 #include <QString>
-#include "plant.hxx"
-#include "mainWindow.hxx"
-#include "ui_mainWindow.h"
 #include "cardtemplate.hxx"
+#include "mainWindow.hxx"
+#include "plant.hxx"
+#include "ui_mainWindow.h"
 
 MainWindow::MainWindow(QWidget *parent) : QMainWindow(parent) , ui(new Ui::MainWindow) {
     ui->setupUi(this);
@@ -24,13 +24,11 @@ void MainWindow::showEvent(QShowEvent *event){
         secondwindow *dialog = new secondwindow(this);
         dialog->setModal(true);  
 		if (dialog->exec() == QDialog::Accepted) {
+			QString filePath = dialog->getFilePath();
+			plants.fetchData(filePath.toStdString());
             loadCardsDynamically();
         }
     }
-}
-
-std::string MainWindow::getAddress() {
-	return MainWindow::filePath;
 }
 
 void MainWindow::loadCardsDynamically() {

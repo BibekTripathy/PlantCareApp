@@ -6,43 +6,39 @@
 #include "secondWindow.hxx"
 #include "ui_secondWindow.h"
 
-secondwindow::secondwindow(QWidget *parent) :
-    QDialog(parent),
-    ui(new Ui::secondwindow)
-{
+secondwindow::secondwindow(QWidget *parent) : QDialog(parent), ui(new Ui::secondwindow) {
     ui->setupUi(this);
 }
 
-secondwindow::~secondwindow()
-{
+secondwindow::~secondwindow() {
     delete ui;
 }
 
-void secondwindow::on_BrowseBtn_clicked()
-{
+void secondwindow::on_BrowseBtn_clicked() {
     qDebug() << "selectDb Clicked";
     QString qFilePath = QFileDialog::getOpenFileName(
         this, "Select SQLite Database", "",
-        "SQLite Database (*.db *.sqlite *.sqlite3);;All Files (*)");
+        "SQLite Database (*.db *.sqlite *.sqlite3);;All Files (*)"
+	);
 
     if (qFilePath.isEmpty()) {
         return;
     }
 
-    filePath = qFilePath.toStdString();
     ui->FP_Box->setText(qFilePath);
 }
 
-void secondwindow::on_SubBtn_clicked()
-{
+void secondwindow::on_SubBtn_clicked() {
     QString pathText = ui->FP_Box->text();  // ✅ QLineEdit uses .text()
 
     if (pathText.isEmpty()) {
         QMessageBox::warning(this, "No File", "Please select a database file.");
         return;
     }
-    
-    Plants plant;
-    plant.setFilePath(pathText.toStdString());
+	filePath = pathText;
     accept();
+}
+
+QString secondwindow::getFilePath() const {
+    return filePath;
 }

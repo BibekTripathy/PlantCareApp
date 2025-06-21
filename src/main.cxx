@@ -6,6 +6,7 @@
 #include <string>
 #include "plant.hxx"
 #include "mainWindow.hxx"
+#include "secondWindow.hxx"
 
 int main(int argc, char *argv[]) {
 	// std::cout
@@ -15,8 +16,8 @@ int main(int argc, char *argv[]) {
 	// std::cin.get();
 
 	QApplication app(argc, argv);
-	MainWindow window;
-	window.show();
+	MainWindow mainWindow;
+	mainWindow.show();
 
 	/* Main method needs to be rewritten to adjust flow of actions
 	 * due to change in paradigm of code functioning. */
