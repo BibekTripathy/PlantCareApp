@@ -13,13 +13,19 @@
   <property name="windowTitle">
    <string>Dialog</string>
   </property>
+  <property name="styleSheet">
+   <string notr="true">background-color: #f6f0e9;
+border: 1px solid #bfaaff;
+border-radius: 10px;
+padding: 1px;</string>
+  </property>
   <widget class="QLabel" name="FP_Label">
    <property name="geometry">
     <rect>
      <x>40</x>
-     <y>80</y>
+     <y>76</y>
      <width>61</width>
-     <height>16</height>
+     <height>20</height>
     </rect>
    </property>
    <property name="text">
@@ -56,8 +62,8 @@
    <property name="geometry">
     <rect>
      <x>40</x>
-     <y>100</y>
-     <width>321</width>
+     <y>120</y>
+     <width>341</width>
      <height>22</height>
     </rect>
    </property>

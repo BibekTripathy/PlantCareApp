@@ -15,6 +15,9 @@ public:
     explicit cardtemplate(QWidget *parent = nullptr);
     ~cardtemplate();
 
+private slots:
+    void on_EditBtn_clicked();
+
 private:
     Ui::cardtemplate *ui;
 };

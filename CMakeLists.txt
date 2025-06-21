@@ -29,6 +29,7 @@ set(PROJECT_SOURCES
 	src/mainWindow.cxx
 	src/secondWindow.cxx
 	src/cardtemplate.cxx
+	src/editwindow.cxx
 )
 
 # Header Files
@@ -38,6 +39,7 @@ set(HEADER_SOURCES
 	include/mainWindow.hxx
 	include/secondWindow.hxx
 	include/cardtemplate.hxx
+	include/editwindow.hxx
 )
 
 # UI Files
@@ -45,6 +47,7 @@ set(UI_SOURCES
 	ui/mainWindow.ui
 	ui/secondWindow.ui
 	ui/cardtemplate.ui
+	ui/editwindow.ui
 )
 
 set(CMAKE_AUTOUIC_SEARCH_PATHS ${CMAKE_SOURCE_DIR}/ui)

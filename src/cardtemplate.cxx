@@ -1,3 +1,4 @@
+#include "editwindow.hxx"
 #include "cardtemplate.hxx"
 #include "ui_cardtemplate.h"
 
@@ -12,3 +13,10 @@ cardtemplate::~cardtemplate()
 {
     delete ui;
 }
+
+void cardtemplate::on_EditBtn_clicked()
+{
+    editwindow *dialog = new editwindow(this);
+    dialog->exec();
+}
+
