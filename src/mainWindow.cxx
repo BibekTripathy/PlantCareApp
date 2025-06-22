@@ -47,8 +47,9 @@ void MainWindow::loadCardsDynamically() {
     std::vector<Plants::plantData> plantList = plants.getAllPlants();
 
     for (const Plants::plantData& plant : plantList) {
-        cardtemplate* card = new cardtemplate(this);
+        cardtemplate* card = new cardtemplate(this, &plants);  // ✅ pass pointer to plants
         card->setPlantData(plant);
         layout->addWidget(card);
     }
 }
+

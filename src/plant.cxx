@@ -39,6 +39,26 @@ std::vector<Plants::plantData> Plants::getAllPlants() {
     return result;
 }
 
+bool Plants::updatePlantData(const Plants::plantData& data) {
+    const char* sql = "UPDATE plants SET name = ?, species = ?, description = ?, healthStatus = ? WHERE id = ?";
+    sqlite3_stmt* stmt;
+
+    if (sqlite3_prepare_v2(db, sql, -1, &stmt, nullptr) != SQLITE_OK) {
+        qDebug() << "Failed to prepare update:" << sqlite3_errmsg(db);
+        return false;
+    }
+
+    sqlite3_bind_text(stmt, 1, data.name.toUtf8().constData(), -1, SQLITE_TRANSIENT);
+    sqlite3_bind_text(stmt, 2, data.species.toUtf8().constData(), -1, SQLITE_TRANSIENT);
+    sqlite3_bind_text(stmt, 3, data.description.toUtf8().constData(), -1, SQLITE_TRANSIENT);
+    sqlite3_bind_text(stmt, 4, data.healthStatus.toUtf8().constData(), -1, SQLITE_TRANSIENT);
+    sqlite3_bind_int(stmt, 5, data.id);
+
+    bool success = sqlite3_step(stmt) == SQLITE_DONE;
+    sqlite3_finalize(stmt);
+    return success;
+}
+
 
 void Plants::closeDatabase() {
     if (db) {

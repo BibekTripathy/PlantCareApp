@@ -23,6 +23,7 @@ private:
 public:
 	void setFilePath(const std::string &filePath);
 	std::vector<plantData> getAllPlants();
+	bool updatePlantData(const plantData& data);
 	void fetchData(const std::string &filePath);
 	void openDatabase();
 	void createTable();
@@ -39,6 +40,7 @@ public:
 	void closeDatabase();
 	friend class MainWindow;
 	friend class cardtemplate;
+	friend class editwindow;
 };
 
 #endif // !PLANT_HXX
