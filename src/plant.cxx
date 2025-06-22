@@ -5,6 +5,7 @@
 #include <string>
 #include <vector>
 #include <QDebug>
+#include <QString>
 #include "plant.hxx"
 
 void Plants::setFilePath(const std::string &filePath){
@@ -12,6 +13,32 @@ void Plants::setFilePath(const std::string &filePath){
     qDebug()<<"File Path has been set.";
     qDebug()<<dbPath;
 }
+
+std::vector<Plants::plantData> Plants::getAllPlants() {
+    std::vector<Plants::plantData> result;
+
+    const char* sql = "SELECT id, name, species, description, healthStatus FROM plants;";
+    sqlite3_stmt* stmt;
+
+    if (sqlite3_prepare_v2(db, sql, -1, &stmt, nullptr) != SQLITE_OK) {
+        qDebug() << "Failed to prepare statement:" << sqlite3_errmsg(db);
+        return result;
+    }
+
+    while (sqlite3_step(stmt) == SQLITE_ROW) {
+        plantData data;
+        data.id = sqlite3_column_int(stmt, 0);
+        data.name = QString::fromUtf8(reinterpret_cast<const char*>(sqlite3_column_text(stmt, 1)));
+        data.species = QString::fromUtf8(reinterpret_cast<const char*>(sqlite3_column_text(stmt, 2)));
+        data.description = QString::fromUtf8(reinterpret_cast<const char*>(sqlite3_column_text(stmt, 3)));
+        data.healthStatus = QString::fromUtf8(reinterpret_cast<const char*>(sqlite3_column_text(stmt, 4)));
+        result.push_back(data);
+    }
+
+    sqlite3_finalize(stmt);
+    return result;
+}
+
 
 void Plants::closeDatabase() {
     if (db) {
@@ -81,7 +108,7 @@ void Plants::showDetails() {
 
     sqlite3_finalize(stmt);
 }
-
+/*
 void Plants::addPlant() {
     plantData newPlant;
 
@@ -94,16 +121,16 @@ void Plants::addPlant() {
     std::getline(std::cin, newPlant.description);
     std::cout << "Health Status: " << std::flush;
     std::getline(std::cin, newPlant.healthStatus);
-    /*Inserting Plants*/
+    //Inserting Plants
     const char* sql =
         "INSERT INTO plants (name, species, description, healthStatus) VALUES (?, ?, ?, ?);";
     sqlite3_stmt* stmt;
-    /*Error Handling*/
+    //Error Handling
     if (sqlite3_prepare_v2(db, sql, -1, &stmt, nullptr) != SQLITE_OK) {
         std::cerr << "Failed to prepare statement: " << sqlite3_errmsg(db) << std::endl;
         return;
     }
-    /*Appending plants into database*/
+    //Appending plants into database
     sqlite3_bind_text(stmt, 1, newPlant.name.c_str(), -1, SQLITE_TRANSIENT);
     sqlite3_bind_text(stmt, 2, newPlant.species.c_str(), -1, SQLITE_TRANSIENT);
     sqlite3_bind_text(stmt, 3, newPlant.description.c_str(), -1, SQLITE_TRANSIENT);
@@ -129,7 +156,7 @@ void Plants::editPlant() {
 
     const char* checkSql = "SELECT COUNT(*) FROM plants WHERE id = ?;";
     sqlite3_stmt* checkStmt;
-    /*Error Handling*/
+    //Error Handling
     if (sqlite3_prepare_v2(db, checkSql, -1, &checkStmt, nullptr) != SQLITE_OK) {
         std::cerr << "Failed to prepare statement: " << sqlite3_errmsg(db) << std::endl;
         return;
@@ -137,7 +164,7 @@ void Plants::editPlant() {
 
     sqlite3_bind_int(checkStmt, 1, plantId);
 
-    /*Error Handling*/
+    //Error Handling
     if (sqlite3_step(checkStmt) != SQLITE_ROW ||
         sqlite3_column_int(checkStmt, 0) == 0) {
         std::cerr << "Error:Plant with ID: " << plantId << " not found." << std::endl;
@@ -181,7 +208,7 @@ void Plants::editPlant() {
         }
         std::string newValue{ "" };
         std::string columnName;
-        /*Option to edit plant properties*/
+        //Option to edit plant properties
         switch (choice) {
         case '1': {
             std::cout << "New Name: ";
@@ -205,7 +232,7 @@ void Plants::editPlant() {
         }
         }
         std::getline(std::cin, newValue);
-        /*Update SQL*/
+        //Update SQL
         std::string updateSql = "UPDATE plants SET " + columnName + " = ? WHERE id =?;";
         sqlite3_stmt* updateStmt;
         if (sqlite3_prepare_v2(db, updateSql.c_str(), -1, &updateStmt, nullptr) != SQLITE_OK) {
@@ -216,7 +243,7 @@ void Plants::editPlant() {
         sqlite3_bind_text(updateStmt, 1, newValue.c_str(), -1, SQLITE_TRANSIENT);
         sqlite3_bind_int(updateStmt, 2, plantId);
 
-        /*Error Handling*/
+        //Error Handling
         if (sqlite3_step(updateStmt) != SQLITE_DONE) {
             std::cerr << "Error updating plant: " << sqlite3_errmsg(db) << std::endl;
         } else {
@@ -231,7 +258,7 @@ void Plants::removePlant(int plantId) {
     const char* checkSql = "SELECT COUNT(*) FROM plants WHERE id = ?;";
     sqlite3_stmt* checkStmt;
 
-    /*Error Handling*/
+    //Error Handling
     if (sqlite3_prepare_v2(db, checkSql, -1, &checkStmt, nullptr) != SQLITE_OK) {
         std::cerr << "Failed to prepare statement: " << sqlite3_errmsg(db) << std::endl;
         return;
@@ -257,7 +284,7 @@ void Plants::removePlant(int plantId) {
 
     sqlite3_bind_int(deleteStmt, 1, plantId);
 
-    /*Error Handling while deleting plants*/
+    //Error Handling while deleting plants
     if (sqlite3_step(deleteStmt) != SQLITE_DONE) {
         std::cerr << "Error deleting plant: " << sqlite3_errmsg(db) << std::endl;
     }
@@ -273,7 +300,7 @@ void Plants::searchPlants(const std::string& query) {
     const char* sql = "SELECT id, name, species, description, healthStatus FROM plants WHERE LOWER(name) LIKE ? OR LOWER(species) LIKE ?;";
     sqlite3_stmt* stmt;
 
-    /*Error Handling*/
+    //Error Handling
     if (sqlite3_prepare_v2(db, sql, -1, &stmt, nullptr) != SQLITE_OK) {
         std::cerr << "Failed to prepare statement: " << sqlite3_errmsg(db) << std::endl;
         return;
@@ -309,7 +336,7 @@ void Plants::filterByHealth(const std::string& healthStatus) {
     const char* sql = "SELECT id, name, species, description, healthStatus FROM plants WHERE healthStatus = ?;";
     sqlite3_stmt* stmt;
 
-    /*Error Handling*/
+    //Error Handling
     if (sqlite3_prepare_v2(db, sql, -1, &stmt, nullptr) != SQLITE_OK) {
         std::cerr << "Failed to prepare statement: " << sqlite3_errmsg(db) << std::endl;
         return;
@@ -382,4 +409,4 @@ void Plants::showFiltered(const std::vector<plantData>& filteredPlants) {
             << "\nHealth: " << plant.healthStatus
             << "\n-----------------------------\n";
     }
-}
+}*/

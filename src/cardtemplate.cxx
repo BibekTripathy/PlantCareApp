@@ -20,3 +20,10 @@ void cardtemplate::on_EditBtn_clicked()
     dialog->exec();
 }
 
+void cardtemplate::setPlantData(const Plants::plantData& data) {
+    ui->PlantName->setText(data.name);
+    //ui->speciesLabel->setText(data.species);
+    ui->DescLabel->setText(data.description);
+    ui->StatLabel->setText(data.healthStatus);
+}
+

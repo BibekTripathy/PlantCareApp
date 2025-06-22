@@ -5,7 +5,6 @@
 #include <QString>
 #include "cardtemplate.hxx"
 #include "mainWindow.hxx"
-#include "plant.hxx"
 #include "ui_mainWindow.h"
 
 MainWindow::MainWindow(QWidget *parent) : QMainWindow(parent) , ui(new Ui::MainWindow) {
@@ -45,9 +44,11 @@ void MainWindow::loadCardsDynamically() {
         delete item;
     }
 
-    // Dummy card loop — replace with DB data later
-    for (int i = 0; i < 10; ++i) {
+    std::vector<Plants::plantData> plantList = plants.getAllPlants();
+
+    for (const Plants::plantData& plant : plantList) {
         cardtemplate* card = new cardtemplate(this);
+        card->setPlantData(plant);
         layout->addWidget(card);
     }
 }
