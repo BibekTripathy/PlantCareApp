@@ -1,7 +1,12 @@
 # PlantCareApp
 Work-in-progress Plant Care App
 
-# Build
+## Build
+### Dependencies
+- qt6
+- sqlite3
+
+### Steps
 ```sh
 # Clone the repository
 git clone https://github.com/BibekTripathy/PlantCareApp.git
