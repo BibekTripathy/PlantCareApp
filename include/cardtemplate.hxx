@@ -23,11 +23,17 @@ public:
 private slots:
     void on_EditBtn_clicked();
 
+    void on_DeleteBtn_clicked();
+
 private:
     Ui::cardtemplate *ui;
     int plantId;
     Plants* plantManager = nullptr;
     QString species;
+
+signals:
+    void requestDeletion(cardtemplate* card);
+
 };
 
 #endif // CARDTEMPLATE_H

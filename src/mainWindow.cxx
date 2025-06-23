@@ -61,17 +61,20 @@ void MainWindow::loadCardsDynamically(int columns) {
     std::vector<Plants::plantData> plantList = plants.getAllPlants();
 
     int row = 0, col = 0;
-    for (const auto& plant : plantList) {
-        cardtemplate* card = new cardtemplate(this, &plants);
-        card->setPlantData(plant);
-        gridLayout->addWidget(card, row, col);
+for (const auto& plant : plantList) {
+    cardtemplate* card = new cardtemplate(this, &plants);
+    card->setPlantData(plant);
 
-        col++;
-        if (col >= columns) {
-            col = 0;
-            row++;
-        }
+    connect(card, &cardtemplate::requestDeletion, this, &MainWindow::handleCardDeletion);
+
+    gridLayout->addWidget(card, row, col);
+
+    col++;
+    if (col >= columns) {
+        col = 0;
+        row++;
     }
+}
 
     gridLayout->setSpacing(20);
     gridLayout->setContentsMargins(10, 10, 10, 10);
@@ -86,6 +89,21 @@ void MainWindow::resizeEvent(QResizeEvent* event) {
     int cardWidth = 300;
     int spacing = 20;
 
+    int columns = std::max(1, containerWidth / (cardWidth + spacing));
+
+    loadCardsDynamically(columns);
+}
+
+void MainWindow::handleCardDeletion(cardtemplate* card) {
+    if (!card || !gridLayout) return;
+
+    gridLayout->removeWidget(card);
+    
+    card->deleteLater();
+
+    int containerWidth = ui->scrollArea->viewport()->width();
+    int cardWidth = 300;
+    int spacing = 20;
     int columns = std::max(1, containerWidth / (cardWidth + spacing));
 
     loadCardsDynamically(columns);

@@ -24,6 +24,7 @@ public:
 	void setFilePath(const std::string &filePath);
 	std::vector<plantData> getAllPlants();
 	bool updatePlantData(const plantData& data);
+	bool deletePlantById(int id);
 	void fetchData(const std::string &filePath);
 	void openDatabase();
 	void createTable();

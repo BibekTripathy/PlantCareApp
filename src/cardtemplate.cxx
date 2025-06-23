@@ -1,5 +1,6 @@
 #include "editwindow.hxx"
 #include "cardtemplate.hxx"
+#include <QMessageBox>
 #include "ui_cardtemplate.h"
 
 cardtemplate::cardtemplate(QWidget *parent, Plants* plantDb) : QWidget(parent), ui(new Ui::cardtemplate), plantManager(plantDb) {
@@ -55,4 +56,21 @@ void cardtemplate::setPlantData(const Plants::plantData& data) {
 
 int cardtemplate::getPlantId(){
     return plantId;
+}
+void cardtemplate::on_DeleteBtn_clicked()
+{
+    if (!plantManager) return;
+
+    QMessageBox::StandardButton reply;
+    reply = QMessageBox::question(this, "Delete Plant",
+                                  "Are you sure you want to delete this plant?",
+                                  QMessageBox::Yes | QMessageBox::No);
+
+    if (reply == QMessageBox::Yes) {
+        if (plantManager->deletePlantById(plantId)) {
+            emit requestDeletion(this);
+        } else {
+            QMessageBox::warning(this, "Error", "Failed to delete the plant from the database.");
+        }
+    }
 }

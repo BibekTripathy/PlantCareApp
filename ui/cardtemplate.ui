@@ -56,6 +56,16 @@ padding: 2px;</string>
          </property>
         </widget>
        </item>
+       <item>
+        <widget class="QPushButton" name="DeleteBtn">
+         <property name="text">
+          <string/>
+         </property>
+         <property name="icon">
+          <iconset theme="QIcon::ThemeIcon::EditDelete"/>
+         </property>
+        </widget>
+       </item>
       </layout>
      </item>
      <item>

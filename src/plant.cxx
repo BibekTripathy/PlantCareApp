@@ -59,6 +59,24 @@ bool Plants::updatePlantData(const Plants::plantData& data) {
     return success;
 }
 
+bool Plants::deletePlantById(int id) {
+    if (!db) return false;
+
+    sqlite3_stmt* stmt;
+    const char* sql = "DELETE FROM plants WHERE id = ?";
+
+    if (sqlite3_prepare_v2(db, sql, -1, &stmt, nullptr) != SQLITE_OK) {
+        return false;
+    }
+
+    sqlite3_bind_int(stmt, 1, id);
+
+    bool success = (sqlite3_step(stmt) == SQLITE_DONE);
+    sqlite3_finalize(stmt);
+    return success;
+}
+
+
 
 void Plants::closeDatabase() {
     if (db) {

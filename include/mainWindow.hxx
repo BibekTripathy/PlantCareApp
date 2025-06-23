@@ -4,6 +4,7 @@
 #include <QMainWindow>
 #include <QGridLayout>
 #include "plant.hxx"
+#include "cardtemplate.hxx"
 #include "secondWindow.hxx"
 
 QT_BEGIN_NAMESPACE
@@ -26,6 +27,7 @@ protected:
     void resizeEvent(QResizeEvent* event) override;
 
 private slots:
+    void handleCardDeletion(cardtemplate* card);
 
 public slots:
 
