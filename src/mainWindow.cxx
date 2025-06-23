@@ -7,8 +7,10 @@
 #include <QHBoxLayout>
 #include <QGridLayout>
 #include <QLayoutItem>
+#include <QMessageBox>
 #include "cardtemplate.hxx"
 #include "mainWindow.hxx"
+#include "editwindow.hxx"
 #include "ui_mainWindow.h"
 
 MainWindow::MainWindow(QWidget *parent) : QMainWindow(parent) , ui(new Ui::MainWindow) {
@@ -107,4 +109,30 @@ void MainWindow::handleCardDeletion(cardtemplate* card) {
     int columns = std::max(1, containerWidth / (cardWidth + spacing));
 
     loadCardsDynamically(columns);
+}
+
+void MainWindow::on_actionNew_Plant_triggered()
+{
+    Plants::plantData newPlant;
+    newPlant.id = -1;
+    newPlant.name = "";
+    newPlant.species = "";
+    newPlant.description = "";
+    newPlant.healthStatus = "";
+
+    editwindow dialog(newPlant, this);
+    if (dialog.exec() == QDialog::Accepted) {
+        Plants::plantData addedPlant = dialog.getUpdatedData();
+
+        if (plants.insertNewPlant(addedPlant)) {
+            int containerWidth = ui->scrollArea->viewport()->width();
+            int cardWidth = 300;
+            int spacing = 20;
+            int columns = std::max(1, containerWidth / (cardWidth + spacing));
+
+            loadCardsDynamically(columns);
+        } else {
+            QMessageBox::warning(this, "Error", "Failed to add plant to database.");
+        }
+    }
 }

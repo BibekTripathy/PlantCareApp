@@ -28,6 +28,8 @@ protected:
 
 private slots:
     void handleCardDeletion(cardtemplate* card);
+    void on_actionNew_Plant_triggered();
+
 
 public slots:
 

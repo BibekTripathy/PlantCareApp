@@ -32,8 +32,7 @@
    <string>Form</string>
   </property>
   <property name="styleSheet">
-   <string notr="true">background-color: #f6f0e9;
-border: 1px solid #bfaaff;
+   <string notr="true">border: 1px solid #000000;
 border-radius: 10px;
 padding: 2px;</string>
   </property>
@@ -59,10 +58,7 @@ padding: 2px;</string>
        <item>
         <widget class="QPushButton" name="DeleteBtn">
          <property name="text">
-          <string/>
-         </property>
-         <property name="icon">
-          <iconset theme="QIcon::ThemeIcon::EditDelete"/>
+          <string>Delete</string>
          </property>
         </widget>
        </item>

@@ -26,7 +26,7 @@
          <x>0</x>
          <y>0</y>
          <width>1260</width>
-         <height>657</height>
+         <height>678</height>
         </rect>
        </property>
        <property name="sizePolicy">
@@ -49,8 +49,20 @@
      <height>22</height>
     </rect>
    </property>
+   <widget class="QMenu" name="menuAdd_Plant">
+    <property name="title">
+     <string>Add Plant</string>
+    </property>
+    <addaction name="separator"/>
+    <addaction name="actionNew_Plant"/>
+   </widget>
+   <addaction name="menuAdd_Plant"/>
   </widget>
-  <widget class="QStatusBar" name="statusbar"/>
+  <action name="actionNew_Plant">
+   <property name="text">
+    <string>New Plant</string>
+   </property>
+  </action>
  </widget>
  <resources/>
  <connections/>

@@ -76,7 +76,40 @@ bool Plants::deletePlantById(int id) {
     return success;
 }
 
+bool Plants::insertNewPlant(const plantData& plant) {
+    if (!db) {
+        qDebug() << "Database pointer is null.";
+        return false;
+    }
 
+    const char* sql =
+        "INSERT INTO plants (name, species, description, healthStatus) VALUES (?, ?, ?, ?)";
+    sqlite3_stmt* stmt;
+
+    if (sqlite3_prepare_v2(db, sql, -1, &stmt, nullptr) != SQLITE_OK) {
+        qDebug() << "Prepare failed:" << sqlite3_errmsg(db);
+        return false;
+    }
+
+    std::string name = plant.name.toStdString();
+    std::string species = plant.species.toStdString();
+    std::string desc = plant.description.toStdString();
+    std::string health = plant.healthStatus.toStdString();
+
+    sqlite3_bind_text(stmt, 1, name.c_str(), -1, SQLITE_TRANSIENT);
+    sqlite3_bind_text(stmt, 2, species.c_str(), -1, SQLITE_TRANSIENT);
+    sqlite3_bind_text(stmt, 3, desc.c_str(), -1, SQLITE_TRANSIENT);
+    sqlite3_bind_text(stmt, 4, health.c_str(), -1, SQLITE_TRANSIENT);
+
+    if (sqlite3_step(stmt) != SQLITE_DONE) {
+        qDebug() << "Insert step failed:" << sqlite3_errmsg(db);
+        sqlite3_finalize(stmt);
+        return false;
+    }
+
+    sqlite3_finalize(stmt);
+    return true;
+}
 
 void Plants::closeDatabase() {
     if (db) {

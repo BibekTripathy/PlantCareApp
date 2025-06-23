@@ -25,6 +25,7 @@ public:
 	std::vector<plantData> getAllPlants();
 	bool updatePlantData(const plantData& data);
 	bool deletePlantById(int id);
+	bool insertNewPlant(const plantData& plant);
 	void fetchData(const std::string &filePath);
 	void openDatabase();
 	void createTable();
