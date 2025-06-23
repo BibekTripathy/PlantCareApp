@@ -13,50 +13,55 @@
 
 MainWindow::MainWindow(QWidget *parent) : QMainWindow(parent) , ui(new Ui::MainWindow) {
     ui->setupUi(this);
+    ui->scrollArea->setWidgetResizable(true);
+    ui->cardContainer->setSizePolicy(QSizePolicy::Expanding, QSizePolicy::Preferred);
 }
 
 MainWindow::~MainWindow() {
     delete ui;
 }
 
-void MainWindow::showEvent(QShowEvent *event){
-	QMainWindow::showEvent(event);
+void MainWindow::showEvent(QShowEvent *event) {
+    QMainWindow::showEvent(event);
 
     if (firstShow) {
         firstShow = false;
         secondwindow *dialog = new secondwindow(this);
         dialog->setModal(true);  
-		if (dialog->exec() == QDialog::Accepted) {
-			QString filePath = dialog->getFilePath();
-			plants.fetchData(filePath.toStdString());
-            loadCardsDynamically();
+        
+        if (dialog->exec() == QDialog::Accepted) {
+            QString filePath = dialog->getFilePath();
+            plants.fetchData(filePath.toStdString());
+
+            int containerWidth = ui->scrollArea->viewport()->width();
+            int cardWidth = 300;
+            int spacing = 20;
+            int columns = std::max(1, containerWidth / (cardWidth + spacing));
+
+            loadCardsDynamically(columns);
         }
     }
 }
 
-void MainWindow::loadCardsDynamically() {
-    // Create a new grid layout
-    QGridLayout* gridLayout = new QGridLayout();
 
-    // Remove any old layout from the container
-    if (ui->cardContainer->layout()) {
+void MainWindow::loadCardsDynamically(int columns) {
+    // Clean old layout
+    if (gridLayout) {
         QLayoutItem* item;
-        while ((item = ui->cardContainer->layout()->takeAt(0)) != nullptr) {
+        while ((item = gridLayout->takeAt(0)) != nullptr) {
             delete item->widget();
             delete item;
         }
-        delete ui->cardContainer->layout();  // delete the old layout
+        delete gridLayout;
     }
 
-    // Set the new grid layout
+    gridLayout = new QGridLayout();
     ui->cardContainer->setLayout(gridLayout);
 
     std::vector<Plants::plantData> plantList = plants.getAllPlants();
 
     int row = 0, col = 0;
-    const int columns = 2;
-
-    for (const Plants::plantData& plant : plantList) {
+    for (const auto& plant : plantList) {
         cardtemplate* card = new cardtemplate(this, &plants);
         card->setPlantData(plant);
         gridLayout->addWidget(card, row, col);
@@ -68,8 +73,20 @@ void MainWindow::loadCardsDynamically() {
         }
     }
 
-    // Optional: spacing for better visuals
     gridLayout->setSpacing(20);
     gridLayout->setContentsMargins(10, 10, 10, 10);
 }
 
+void MainWindow::resizeEvent(QResizeEvent* event) {
+    QMainWindow::resizeEvent(event);
+
+    if (!ui->scrollArea || !ui->cardContainer) return;
+
+    int containerWidth = ui->scrollArea->viewport()->width();
+    int cardWidth = 300;
+    int spacing = 20;
+
+    int columns = std::max(1, containerWidth / (cardWidth + spacing));
+
+    loadCardsDynamically(columns);
+}

@@ -2,6 +2,7 @@
 #define MAINWINDOW_HXX
 
 #include <QMainWindow>
+#include <QGridLayout>
 #include "plant.hxx"
 #include "secondWindow.hxx"
 
@@ -20,8 +21,9 @@ public:
 
 
 protected:
-    void loadCardsDynamically();
+    void loadCardsDynamically(int columns);
     void showEvent(QShowEvent *event) override;
+    void resizeEvent(QResizeEvent* event) override;
 
 private slots:
 
@@ -31,6 +33,7 @@ private:
     Ui::MainWindow *ui;
 	Plants plants;
     bool firstShow = true;
+    QGridLayout* gridLayout = nullptr;
 };
 
 #endif // !MAINWINDOW_HXX

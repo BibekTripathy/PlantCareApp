@@ -4,6 +4,8 @@
 
 cardtemplate::cardtemplate(QWidget *parent, Plants* plantDb) : QWidget(parent), ui(new Ui::cardtemplate), plantManager(plantDb) {
     ui->setupUi(this);
+    setSizePolicy(QSizePolicy::Preferred, QSizePolicy::Preferred);
+    setMinimumSize(280, 180);
 }
 
 cardtemplate::~cardtemplate()
