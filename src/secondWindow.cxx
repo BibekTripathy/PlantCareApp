@@ -8,6 +8,8 @@
 
 secondwindow::secondwindow(QWidget *parent) : QDialog(parent), ui(new Ui::secondwindow) {
     ui->setupUi(this);
+    this->setMinimumSize(400, 200);
+    this->resize(500, 220);
 }
 
 secondwindow::~secondwindow() {
