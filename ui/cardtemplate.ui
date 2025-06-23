@@ -32,9 +32,7 @@
    <string>Form</string>
   </property>
   <property name="styleSheet">
-   <string notr="true">border: 1px solid #000000;
-border-radius: 10px;
-padding: 2px;</string>
+   <string notr="true"/>
   </property>
   <layout class="QVBoxLayout" name="verticalLayout_6">
    <item>

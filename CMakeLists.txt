@@ -22,6 +22,8 @@ set(CMAKE_AUTOMOC ON)
 set(CMAKE_AUTORCC ON)
 set(CMAKE_AUTOUIC ON)
 
+qt_add_resources(RESOURCES resources.qrc)
+
 # Source files
 set(PROJECT_SOURCES
 	src/main.cxx
@@ -30,6 +32,7 @@ set(PROJECT_SOURCES
 	src/secondWindow.cxx
 	src/cardtemplate.cxx
 	src/editwindow.cxx
+	src/stylemanager.cxx
 )
 
 # Header Files
@@ -40,6 +43,7 @@ set(HEADER_SOURCES
 	include/secondWindow.hxx
 	include/cardtemplate.hxx
 	include/editwindow.hxx
+	include/stylemanager.hxx
 )
 
 # UI Files

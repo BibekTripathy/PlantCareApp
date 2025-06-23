@@ -1,0 +1,70 @@
+QWidget {
+    background-color: #F5F5F5;
+    color: #2E2E2E;
+    font-family: "Segoe UI", "Noto Sans", sans-serif;
+    font-size: 14px;
+}
+
+/* Buttons */
+QPushButton {
+    background-color: #E0E0E0;
+    color: #2E2E2E;
+    border: 1px solid #888888;
+    padding: 6px 12px;
+    border-radius: 10px;
+}
+QPushButton:hover {
+    background-color: #D5D5D5;
+}
+QPushButton:pressed {
+    background-color: #C0C0C0;
+}
+
+/* Inputs */
+QLineEdit, QTextEdit {
+    background-color: #FFFFFF;
+    color: #2E2E2E;
+    border: 1px solid #888888;
+    border-radius: 10px;
+    padding: 4px;
+}
+
+/* Labels */
+QLabel {
+    color: #2E2E2E;
+    border: 1px solid #888888;
+    padding: 2px 6px;
+    border-radius: 10px;
+}
+
+/* Scrollbars */
+QScrollBar:vertical, QScrollBar:horizontal {
+    background: transparent;
+    width: 12px;
+    margin: 0px;
+}
+QScrollBar::handle {
+    background: #AAA;
+    border-radius: 10px;
+}
+QScrollBar::handle:hover {
+    background: #888;
+}
+QScrollBar::add-line, QScrollBar::sub-line {
+    background: none;
+}
+
+/* ComboBoxes */
+QComboBox {
+    background-color: #FFFFFF;
+    color: #2E2E2E;
+    border: 1px solid #888888;
+    padding: 4px;
+    border-radius: 10px;
+}
+QComboBox QAbstractItemView {
+    background-color: #FFFFFF;
+    color: #2E2E2E;
+    border: 1px solid #CCCCCC;
+    border-radius: 10px;
+}

@@ -2,11 +2,13 @@
 #include <QApplication>
 #include <QFileDialog>
 #include <QString>
+#include <QStyleHints>
 #include <sqlite3.h>
 #include <string>
 #include "plant.hxx"
 #include "mainWindow.hxx"
 #include "secondWindow.hxx"
+#include "stylemanager.hxx"
 
 int main(int argc, char *argv[]) {
 	// std::cout
@@ -16,6 +18,9 @@ int main(int argc, char *argv[]) {
 	// std::cin.get();
 
 	QApplication app(argc, argv);
+    bool isDark = app.styleHints()->colorScheme() == Qt::ColorScheme::Dark;
+
+    StyleManager::applyStyle(isDark ? StyleManager::Dark : StyleManager::Light);
 	MainWindow mainWindow;
 	mainWindow.show();
 
