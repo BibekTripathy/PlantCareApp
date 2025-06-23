@@ -17,10 +17,10 @@
    <widget class="QScrollArea" name="scrollArea">
     <property name="geometry">
      <rect>
-      <x>30</x>
-      <y>20</y>
-      <width>1231</width>
-      <height>631</height>
+      <x>0</x>
+      <y>0</y>
+      <width>1281</width>
+      <height>711</height>
      </rect>
     </property>
     <property name="widgetResizable">
@@ -31,15 +31,10 @@
       <rect>
        <x>0</x>
        <y>0</y>
-       <width>1229</width>
-       <height>629</height>
+       <width>1279</width>
+       <height>709</height>
       </rect>
      </property>
-     <layout class="QVBoxLayout" name="verticalLayout_3">
-      <item>
-       <layout class="QVBoxLayout" name="verticalLayout_2"/>
-      </item>
-     </layout>
     </widget>
    </widget>
   </widget>
