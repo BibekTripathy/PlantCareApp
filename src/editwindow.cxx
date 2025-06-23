@@ -15,8 +15,8 @@ editwindow::editwindow(const Plants::plantData& data, QWidget *parent) :
 {
     ui->setupUi(this);
 
-    // Pre-fill the fields with the existing data
     ui->PlantNameEdit->setText(data.name);
+    ui->SpeciesNameEdit->setText(data.species);
     ui->DescEdit->setPlainText(data.description);
     ui->HealthEdit->setText(data.healthStatus);
 }
@@ -31,10 +31,10 @@ void editwindow::on_cancelBtn_clicked()
     reject();
 }
 
-// Return the updated data to the caller
 Plants::plantData editwindow::getUpdatedData() const {
     Plants::plantData updated = plantData;
     updated.name = ui->PlantNameEdit->text();
+    updated.species = ui->SpeciesNameEdit->text();
     updated.description = ui->DescEdit->toPlainText();
     updated.healthStatus = ui->HealthEdit->text();
     return updated;

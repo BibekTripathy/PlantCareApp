@@ -17,7 +17,13 @@ void cardtemplate::on_EditBtn_clicked()
 {
     Plants::plantData data;
     data.id = plantId;
-    data.name = ui->PlantName->text();
+
+    QString fullName = ui->PlantName->text();
+    int bracketIndex = fullName.indexOf(" (");
+    QString cleanName = (bracketIndex != -1) ? fullName.left(bracketIndex) : fullName;
+
+    data.name = cleanName;
+    data.species = species;
     data.description = ui->DescLabel->text();
     data.healthStatus = ui->StatLabel->text();
 
@@ -25,10 +31,8 @@ void cardtemplate::on_EditBtn_clicked()
     if (dialog.exec() == QDialog::Accepted) {
         Plants::plantData updated = dialog.getUpdatedData();
 
-        // Step 1: update UI
         setPlantData(updated);
 
-        // Step 2: update database
         if (plantManager) {
             plantManager->updatePlantData(updated);
         }
@@ -38,8 +42,13 @@ void cardtemplate::on_EditBtn_clicked()
 
 void cardtemplate::setPlantData(const Plants::plantData& data) {
     plantId = data.id;
-    ui->PlantName->setText(data.name);
-    //ui->speciesLabel->setText(data.species);
+    species = data.species;
+    QString cleanName = data.name;
+    int bracketIndex = cleanName.indexOf(" (");
+    if (bracketIndex != -1) {
+        cleanName = cleanName.left(bracketIndex);
+    }
+    ui->PlantName->setText(QString("%1 (%2)").arg(cleanName, data.species));
     ui->DescLabel->setText(data.description);
     ui->StatLabel->setText(data.healthStatus);
 }

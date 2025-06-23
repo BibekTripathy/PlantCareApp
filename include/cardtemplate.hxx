@@ -2,6 +2,7 @@
 #define CARDTEMPLATE_H
 
 #include "plant.hxx"
+#include <QString>
 #include <QWidget>
 
 namespace Ui {
@@ -26,6 +27,7 @@ private:
     Ui::cardtemplate *ui;
     int plantId;
     Plants* plantManager = nullptr;
+    QString species;
 };
 
 #endif // CARDTEMPLATE_H
