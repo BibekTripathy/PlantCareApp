@@ -5,29 +5,6 @@ project(QtPlantly VERSION 2.0.0 LANGUAGES CXX)
 set(CMAKE_CXX_STANDARD 17)
 set(CMAKE_CXX_STANDARD_REQUIRED ON)
 
-# Prefer static libraries
-set(BUILD_SHARED_LIBS OFF)
-
-# Static linking options for all platforms
-set(CMAKE_EXE_LINKER_FLAGS "${CMAKE_EXE_LINKER_FLAGS} -static-libgcc -static-libstdc++")
-
-# Windows-specific static runtime
-if(WIN32)
-    message(STATUS "Configuring static linking for Windows")
-
-    if (MSVC)
-        set(CMAKE_MSVC_RUNTIME_LIBRARY "MultiThreaded")  # Use static runtime (/MT)
-    endif()
-endif()
-
-# Optional: Linux full static build (disabled by default)
-if(UNIX AND NOT APPLE)
-    message(STATUS "Configuring static linking for Linux")
-
-    # Uncomment the next line for full static binary (may break glibc/NSS)
-    # set(CMAKE_EXE_LINKER_FLAGS "${CMAKE_EXE_LINKER_FLAGS} -static")
-endif()
-
 # Output directories
 set(CMAKE_RUNTIME_OUTPUT_DIRECTORY ${CMAKE_BINARY_DIR}/bin)
 set(CMAKE_ARCHIVE_OUTPUT_DIRECTORY ${CMAKE_BINARY_DIR}/lib)
@@ -77,12 +54,12 @@ set(UI_SOURCES
 	ui/editwindow.ui
 )
 
+
 set(CMAKE_AUTOUIC_SEARCH_PATHS ${CMAKE_SOURCE_DIR}/ui)
 
 # Define the executable
 qt_add_executable(QtPlantly MANUAL_FINALIZATION ${PROJECT_SOURCES} ${HEADER_SOURCES} ${UI_SOURCES})
 
-# Windows resource icon
 if(WIN32)
     set(APP_ICON_RESOURCE_WINDOWS "${CMAKE_CURRENT_SOURCE_DIR}/appicon.rc")
     target_sources(QtPlantly PRIVATE ${APP_ICON_RESOURCE_WINDOWS})
@@ -93,7 +70,7 @@ target_link_libraries(QtPlantly PRIVATE Qt6::Widgets)
 target_include_directories(QtPlantly PRIVATE ${SQLite3_INCLUDE_DIRS})
 target_link_libraries(QtPlantly PRIVATE ${SQLite3_LIBRARIES})
 
-# Compiler warnings and optimizations
+# Compiler warnings
 target_compile_options(QtPlantly PRIVATE -Wall -Wextra -O2)
 
 # Include Debug Symbols
