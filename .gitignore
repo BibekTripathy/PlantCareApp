@@ -12,8 +12,8 @@ obj/
 # Ignore testing data
 testData/
 
-# Optional: ignore distribution packages (uncomment if built dynamically)
-# dist/
+#ignore distribution packages
+dist/
 
 # Compiled object files
 *.o
