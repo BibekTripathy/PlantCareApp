@@ -1,5 +1,5 @@
 cmake_minimum_required(VERSION 3.16)
-project(QtPlantly LANGUAGES CXX)
+project(QtPlantly VERSION 2.0.0 LANGUAGES CXX)
 
 # Set C++ standard
 set(CMAKE_CXX_STANDARD 17)
