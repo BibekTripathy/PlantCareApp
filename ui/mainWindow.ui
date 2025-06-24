@@ -1,0 +1,117 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<ui version="4.0">
+ <class>MainWindow</class>
+ <widget class="QMainWindow" name="MainWindow">
+  <property name="geometry">
+   <rect>
+    <x>0</x>
+    <y>0</y>
+    <width>1280</width>
+    <height>720</height>
+   </rect>
+  </property>
+  <property name="windowTitle">
+   <string>QtPlantly</string>
+  </property>
+  <widget class="QWidget" name="centralwidget">
+   <layout class="QVBoxLayout" name="verticalLayout">
+    <item>
+     <widget class="QScrollArea" name="scrollArea">
+      <property name="widgetResizable">
+       <bool>true</bool>
+      </property>
+      <widget class="QWidget" name="cardContainer">
+       <property name="geometry">
+        <rect>
+         <x>0</x>
+         <y>0</y>
+         <width>1260</width>
+         <height>678</height>
+        </rect>
+       </property>
+       <property name="sizePolicy">
+        <sizepolicy hsizetype="Expanding" vsizetype="Preferred">
+         <horstretch>0</horstretch>
+         <verstretch>0</verstretch>
+        </sizepolicy>
+       </property>
+      </widget>
+     </widget>
+    </item>
+   </layout>
+  </widget>
+  <widget class="QMenuBar" name="menubar">
+   <property name="geometry">
+    <rect>
+     <x>0</x>
+     <y>0</y>
+     <width>1280</width>
+     <height>22</height>
+    </rect>
+   </property>
+   <widget class="QMenu" name="menuAdd_Plant">
+    <property name="title">
+     <string>Menu</string>
+    </property>
+    <addaction name="separator"/>
+    <addaction name="actionNew_Plant"/>
+    <addaction name="actionChange_create_database"/>
+    <addaction name="actionExit"/>
+   </widget>
+   <widget class="QMenu" name="menuFilter">
+    <property name="title">
+     <string>Filter</string>
+    </property>
+    <widget class="QMenu" name="menuFilter_by_Health">
+     <property name="title">
+      <string>Filter by Health</string>
+     </property>
+     <addaction name="actionHealthy"/>
+     <addaction name="actionUnhealthy"/>
+    </widget>
+    <addaction name="menuFilter_by_Health"/>
+    <addaction name="actionFilter_by_Species"/>
+    <addaction name="actionReset_Filters"/>
+   </widget>
+   <addaction name="menuAdd_Plant"/>
+   <addaction name="menuFilter"/>
+  </widget>
+  <action name="actionNew_Plant">
+   <property name="text">
+    <string>New Plant</string>
+   </property>
+  </action>
+  <action name="actionExit">
+   <property name="text">
+    <string>Exit</string>
+   </property>
+  </action>
+  <action name="actionHealthy">
+   <property name="text">
+    <string>Healthy</string>
+   </property>
+  </action>
+  <action name="actionUnhealthy">
+   <property name="text">
+    <string>Unhealthy</string>
+   </property>
+  </action>
+  <action name="actionFilter_by_Species">
+   <property name="text">
+    <string>Filter by Species</string>
+   </property>
+  </action>
+  <action name="actionReset_Filters">
+   <property name="text">
+    <string>Reset Filters</string>
+   </property>
+  </action>
+  <action name="actionChange_create_database">
+   <property name="text">
+    <string>Change/create database</string>
+   </property>
+  </action>
+ </widget>
+ <resources/>
+ <connections/>
+</ui>
