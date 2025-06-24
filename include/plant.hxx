@@ -26,6 +26,9 @@ public:
 	bool updatePlantData(const plantData& data);
 	bool deletePlantById(int id);
 	bool insertNewPlant(const plantData& plant);
+	std::vector<plantData> getFilteredPlantsByHealth(const std::string& status);
+	std::vector<plantData> getFilteredPlantsBySpecies(const std::string& species);
+	std::vector<std::string> getAllSpecies();
 	void fetchData(const std::string &filePath);
 	void openDatabase();
 	void createTable();

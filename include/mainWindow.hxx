@@ -33,6 +33,14 @@ private slots:
 
     void on_actionExit_triggered();
 
+    void on_actionUnhealthy_triggered();
+
+    void on_actionHealthy_triggered();
+
+    void on_actionFilter_by_Species_triggered();
+
+    void on_actionReset_Filters_triggered();
+
 public slots:
 
 private:

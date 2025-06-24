@@ -111,6 +111,83 @@ bool Plants::insertNewPlant(const plantData& plant) {
     return true;
 }
 
+std::vector<Plants::plantData> Plants::getFilteredPlantsByHealth(const std::string& status) {
+    std::vector<plantData> filtered;
+
+    if (!db) return filtered;
+
+    sqlite3_stmt* stmt;
+    const char* sql = "SELECT * FROM plants WHERE healthStatus = ?";
+
+    if (sqlite3_prepare_v2(db, sql, -1, &stmt, nullptr) == SQLITE_OK) {
+        sqlite3_bind_text(stmt, 1, status.c_str(), -1, SQLITE_TRANSIENT);
+
+        while (sqlite3_step(stmt) == SQLITE_ROW) {
+            plantData plant;
+            plant.id = sqlite3_column_int(stmt, 0);
+            plant.name = reinterpret_cast<const char*>(sqlite3_column_text(stmt, 1));
+            plant.species = reinterpret_cast<const char*>(sqlite3_column_text(stmt, 2));
+            plant.description = reinterpret_cast<const char*>(sqlite3_column_text(stmt, 3));
+            plant.healthStatus = reinterpret_cast<const char*>(sqlite3_column_text(stmt, 4));
+
+            filtered.push_back(plant);
+        }
+    } else {
+        std::cerr << "SQLite filter query failed: " << sqlite3_errmsg(db) << std::endl;
+    }
+
+    sqlite3_finalize(stmt);
+    return filtered;
+}
+
+std::vector<Plants::plantData> Plants::getFilteredPlantsBySpecies(const std::string& species) {
+    std::vector<plantData> results;
+    const char* sql = "SELECT id, name, species, description, healthStatus FROM plants WHERE species = ?;";
+    sqlite3_stmt* stmt;
+
+    if (sqlite3_prepare_v2(db, sql, -1, &stmt, nullptr) != SQLITE_OK) {
+        std::cerr << "Failed to prepare species filter: " << sqlite3_errmsg(db) << std::endl;
+        return results;
+    }
+
+    sqlite3_bind_text(stmt, 1, species.c_str(), -1, SQLITE_TRANSIENT);
+
+    while (sqlite3_step(stmt) == SQLITE_ROW) {
+        plantData plant;
+        plant.id = sqlite3_column_int(stmt, 0);
+        plant.name = reinterpret_cast<const char*>(sqlite3_column_text(stmt, 1));
+        plant.species = reinterpret_cast<const char*>(sqlite3_column_text(stmt, 2));
+        plant.description = reinterpret_cast<const char*>(sqlite3_column_text(stmt, 3));
+        plant.healthStatus = reinterpret_cast<const char*>(sqlite3_column_text(stmt, 4));
+        results.push_back(plant);
+    }
+
+    sqlite3_finalize(stmt);
+    return results;
+}
+
+std::vector<std::string> Plants::getAllSpecies() {
+    std::vector<std::string> speciesList;
+    const char* sql = "SELECT DISTINCT species FROM plants;";
+    sqlite3_stmt* stmt;
+
+    if (sqlite3_prepare_v2(db, sql, -1, &stmt, nullptr) != SQLITE_OK) {
+        std::cerr << "Failed to fetch species: " << sqlite3_errmsg(db) << std::endl;
+        return speciesList;
+    }
+
+    while (sqlite3_step(stmt) == SQLITE_ROW) {
+        const unsigned char* text = sqlite3_column_text(stmt, 0);
+        if (text) {
+            speciesList.push_back(reinterpret_cast<const char*>(text));
+        }
+    }
+
+    sqlite3_finalize(stmt);
+    return speciesList;
+}
+
+
 void Plants::closeDatabase() {
     if (db) {
         sqlite3_close(db);
