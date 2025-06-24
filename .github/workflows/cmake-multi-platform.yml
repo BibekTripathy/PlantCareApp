@@ -90,7 +90,7 @@ jobs:
         # Windows-specific arguments
         if [[ "${{ runner.os }}" == "windows" ]]; then
           cmake_args+=(
-            -DCMAKE_TOOLCHAIN_FILE="${{ github.workspace }}/vcpkg/scripts/buildsystems/vcpkg.cmake"
+            -DCMAKE_TOOLCHAIN_FILE="$VCPKG_ROOT/scripts/buildsystems/vcpkg.cmake"
             -DVCPKG_TARGET_TRIPLET=x64-windows
           )
         fi
