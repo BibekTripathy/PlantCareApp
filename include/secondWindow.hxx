@@ -23,6 +23,7 @@ private:
 private slots:
     void on_BrowseBtn_clicked();
     void on_SubBtn_clicked();
+    void on_CreateDBbutton_clicked();
 };
 
 #endif // !SECONDWINDOW_HXX

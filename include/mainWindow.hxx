@@ -41,6 +41,8 @@ private slots:
 
     void on_actionReset_Filters_triggered();
 
+    void on_actionChange_create_database_triggered();
+
 public slots:
 
 private:

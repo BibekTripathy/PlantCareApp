@@ -55,6 +55,7 @@
     </property>
     <addaction name="separator"/>
     <addaction name="actionNew_Plant"/>
+    <addaction name="actionChange_create_database"/>
     <addaction name="actionExit"/>
    </widget>
    <widget class="QMenu" name="menuFilter">
@@ -103,6 +104,11 @@
   <action name="actionReset_Filters">
    <property name="text">
     <string>Reset Filters</string>
+   </property>
+  </action>
+  <action name="actionChange_create_database">
+   <property name="text">
+    <string>Change/create database</string>
    </property>
   </action>
  </widget>

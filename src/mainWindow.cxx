@@ -13,6 +13,7 @@
 #include <QSettings>
 #include "cardtemplate.hxx"
 #include "mainWindow.hxx"
+#include "secondWindow.hxx"
 #include "editwindow.hxx"
 #include "ui_mainWindow.h"
 
@@ -334,3 +335,36 @@ void MainWindow::on_actionReset_Filters_triggered()
     loadCardsDynamically(columns);
 }
 
+
+void MainWindow::on_actionChange_create_database_triggered()
+{
+    secondwindow* dialog = new secondwindow(this);
+    dialog->setModal(true);
+
+    if (dialog->exec() == QDialog::Accepted) {
+        QString filePath = dialog->getFilePath();
+
+        if (filePath.isEmpty()) return;
+
+        QFileInfo checkFile(filePath);
+        if (!checkFile.exists() || !checkFile.isFile()) {
+            QMessageBox::warning(this, "Invalid File", "The selected database file does not exist.");
+            return;
+        }
+
+        // Fetch new database
+        plants.fetchData(filePath.toStdString());
+
+        // Update settings for persistence
+        QSettings settings("YourCompany", "PlantCareApp");
+        settings.setValue("lastDatabase", filePath);
+
+        // Refresh the UI
+        int containerWidth = ui->scrollArea->viewport()->width();
+        int cardWidth = 300;
+        int spacing = 20;
+        int columns = std::max(1, containerWidth / (cardWidth + spacing));
+
+        loadCardsDynamically(columns);
+    }
+}
