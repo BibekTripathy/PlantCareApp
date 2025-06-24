@@ -1,6 +1,16 @@
 # QtPlantly
 
+<div align="center">
+  <img src="https://raw.githubusercontent.com/BibekTripathy/QtPlantly/refs/heads/main/assets/icons/qtplantly.png" alt="qtplantly" width="200"/>
+</div>
+
 **QtPlantly** is a Qt6 desktop application that helps you monitor and manage your indoor plants. It uses an `sqlite3` database to store detailed information about each plant, including its name, type, watering schedule, health status, and last care date.
+
+---
+
+## Screenshots
+
+> ![QtPlantly_Preview_Screenshot](https://raw.githubusercontent.com/BibekTripathy/QtPlantly/refs/heads/main/assets/media/QtPlantly_Preview_Screenshot.png)
 
 ---
 
@@ -12,6 +22,21 @@
 * Data persisted using a local SQLite3 database
 * Supports multiple databases
 * Cross-platform GUI built with Qt6
+
+---
+
+## Installation
+
+### Windows
+- Go into [Releases](https://github.com/BibekTripathy/QtPlantly/releases) and download the .zip file for Windows
+- Extract it into an appropriate directory
+- Run `QtPlantly.exe` to start the application
+
+### Linux
+- Go into [Releases](https://github.com/BibekTripathy/QtPlantly/releases) and download the .zip file for Linux
+- Extract it into an appropriate directory
+- Make sure to have `Qt6` and `Sqlite3` installed from your Distro's package manager
+- Run `QtPlantly` to start the application
 
 ---
 
@@ -46,14 +71,6 @@ cmake --build .
 # Run the program
 ./bin/QtPlantly
 ```
-
----
-
-## Screenshots
-
-*(T.B.A)*
-
-> ![image_stub](/path/to/screenshot.jpg)
 
 ---
 
