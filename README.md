@@ -1,6 +1,6 @@
 # QtPlantly
 
-**	QtPlantly** is a Qt6 desktop application that helps you monitor and manage your indoor plants. It uses an `sqlite3` database to store detailed information about each plant, including its name, type, watering schedule, health status, and last care date.
+**QtPlantly** is a Qt6 desktop application that helps you monitor and manage your indoor plants. It uses an `sqlite3` database to store detailed information about each plant, including its name, type, watering schedule, health status, and last care date.
 
 ---
 
