@@ -54,6 +54,21 @@ jobs:
       #  host: ${{ runner.os }}
       #  tools: 'tools_cmake'
 
+    - name: Install SQLite3 (Linux)
+      if: runner.os == 'linux'
+      run: |
+        sudo apt-get update
+        sudo apt-get install -y sqlite3 libsqlite3-dev
+
+    - name: Install SQLite3 (Windows)
+      if: runner.os == 'windows'
+      run: |
+        # On Windows, we'll use vcpkg to install SQLite3
+        git clone https://github.com/Microsoft/vcpkg.git
+        ./vcpkg/bootstrap-vcpkg.sh -disableMetrics
+        ./vcpkg/vcpkg install sqlite3:x64-windows
+        echo "VCPKG_ROOT=${{ github.workspace }}/vcpkg" >> $GITHUB_ENV
+
     - name: Set reusable strings
       # Turn repeated input strings (such as the build output directory) into step outputs. These step outputs can be used throughout the workflow file.
       id: strings
@@ -69,6 +84,7 @@ jobs:
         -DCMAKE_CXX_COMPILER=${{ matrix.cpp_compiler }}
         -DCMAKE_C_COMPILER=${{ matrix.c_compiler }}
         -DCMAKE_BUILD_TYPE=${{ matrix.build_type }}
+        ${{ runner.os == 'windows' && '-DCMAKE_TOOLCHAIN_FILE=$VCPKG_ROOT/scripts/buildsystems/vcpkg.cmake' || '' }}
         -S ${{ github.workspace }}
 
     - name: Build
