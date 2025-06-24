@@ -65,7 +65,7 @@ jobs:
       run: |
         # On Windows, we'll use vcpkg to install SQLite3
         git clone https://github.com/Microsoft/vcpkg.git
-        ./vcpkg/bootstrap-vcpkg.sh -disableMetrics
+        ./vcpkg/bootstrap-vcpkg.bat -disableMetrics
         ./vcpkg/vcpkg install sqlite3:x64-windows
         echo "VCPKG_ROOT=${{ github.workspace }}/vcpkg" >> $GITHUB_ENV
 
