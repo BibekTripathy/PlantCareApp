@@ -14,7 +14,7 @@
 
 int main(int argc, char *argv[]) {
 
-	if (std::string(argv[0]) == std::string("--version")) {
+	if (argc > 1 && std::string(argv[1]) == std::string("--version")) {
 		std::cout
 			<< "QtPlantly " << APP_VERSION << "\n"
 			<< "License GPLv3: GNU GPL Version 3 or <https://raw.githubusercontent.com/BibekTripathy/QtPlantly/refs/heads/main/LICENSE>\n"
