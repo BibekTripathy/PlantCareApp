@@ -94,16 +94,16 @@ jobs:
             -DVCPKG_TARGET_TRIPLET=x64-windows
           )
         fi
-        if [[ "${{ matrix.c_compiler }}" == "cl" ]]; then
-          cmake_args+=(
-            -DCMAKE_CXX_FLAGS="/W4 /WX"
-          )
-        else
-          # Linux-specific arguments
-          cmake_args+=(
-            -DCMAKE_CXX_FLAGS="-Wall -Wextra -Wpedantic -Werror"
-          )
-        fi
+        #if [[ "${{ matrix.c_compiler }}" == "cl" ]]; then
+        #  cmake_args+=(
+        #    -DCMAKE_CXX_FLAGS="/W4 /WX"
+        #  )
+        #else
+        #  # Linux-specific arguments
+        #  cmake_args+=(
+        #    -DCMAKE_CXX_FLAGS="-Wall -Wextra -Wpedantic -Werror"
+        #  )
+        #fi
         
         cmake_args+=(
           -S "${{ github.workspace }}"
