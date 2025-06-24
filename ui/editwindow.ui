@@ -20,7 +20,7 @@
    <item>
     <layout class="QHBoxLayout" name="horizontalLayout_4">
      <property name="spacing">
-      <number>50</number>
+      <number>47</number>
      </property>
      <item>
       <widget class="QLabel" name="PlantLabel">
@@ -37,7 +37,7 @@
    <item>
     <layout class="QHBoxLayout" name="horizontalLayout_3">
      <property name="spacing">
-      <number>72</number>
+      <number>75</number>
      </property>
      <item>
       <widget class="QLabel" name="SpeciesLabel">
@@ -54,7 +54,7 @@
    <item>
     <layout class="QHBoxLayout" name="horizontalLayout_5">
      <property name="spacing">
-      <number>50</number>
+      <number>51</number>
      </property>
      <property name="topMargin">
       <number>0</number>
@@ -76,6 +76,9 @@
    </item>
    <item>
     <layout class="QHBoxLayout" name="horizontalLayout">
+     <property name="spacing">
+      <number>38</number>
+     </property>
      <item>
       <widget class="QLabel" name="HealthLabel">
        <property name="text">
@@ -93,22 +96,9 @@
      <property name="spacing">
       <number>20</number>
      </property>
-     <item>
-      <spacer name="horizontalSpacer_3">
-       <property name="orientation">
-        <enum>Qt::Orientation::Horizontal</enum>
-       </property>
-       <property name="sizeType">
-        <enum>QSizePolicy::Policy::Preferred</enum>
-       </property>
-       <property name="sizeHint" stdset="0">
-        <size>
-         <width>40</width>
-         <height>20</height>
-        </size>
-       </property>
-      </spacer>
-     </item>
+     <property name="leftMargin">
+      <number>142</number>
+     </property>
      <item>
       <widget class="QPushButton" name="SaveBtn">
        <property name="text">
