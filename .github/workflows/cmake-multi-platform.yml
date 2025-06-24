@@ -62,11 +62,16 @@ jobs:
         ./vcpkg/vcpkg install sqlite3:x64-windows
         echo "VCPKG_ROOT=${{ github.workspace }}/vcpkg" >> $GITHUB_ENV
 
-    - name: Install LLVM/Clang (Windows)
+    - name: Install LLVM via scoop (Windows)
       if: runner.os == 'windows'
       run: |
-        choco install llvm --version=19.0.0 -y
-        echo "C:\Program Files\LLVM\bin" >> $GITHUB_PATH
+        # Install scoop if not present
+        Set-ExecutionPolicy RemoteSigned -Scope CurrentUser
+        irm get.scoop.sh | iex
+        
+        # Install LLVM
+        scoop install llvm
+        echo "$env:USERPROFILE\scoop\apps\llvm\current\bin" >> $env:GITHUB_PATH
 
     - name: Set reusable strings
       # Turn repeated input strings (such as the build output directory) into step outputs. These step outputs can be used throughout the workflow file.
