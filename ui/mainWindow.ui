@@ -51,16 +51,22 @@
    </property>
    <widget class="QMenu" name="menuAdd_Plant">
     <property name="title">
-     <string>Add Plant</string>
+     <string>Menu</string>
     </property>
     <addaction name="separator"/>
     <addaction name="actionNew_Plant"/>
+    <addaction name="actionExit"/>
    </widget>
    <addaction name="menuAdd_Plant"/>
   </widget>
   <action name="actionNew_Plant">
    <property name="text">
     <string>New Plant</string>
+   </property>
+  </action>
+  <action name="actionExit">
+   <property name="text">
+    <string>Exit</string>
    </property>
   </action>
  </widget>

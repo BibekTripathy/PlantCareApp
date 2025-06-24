@@ -15,6 +15,7 @@
 
 MainWindow::MainWindow(QWidget *parent) : QMainWindow(parent) , ui(new Ui::MainWindow) {
     ui->setupUi(this);
+    connect(ui->actionExit, &QAction::triggered, qApp, &QApplication::quit);
     ui->scrollArea->setWidgetResizable(true);
     ui->cardContainer->setSizePolicy(QSizePolicy::Expanding, QSizePolicy::Preferred);
 }
@@ -136,3 +137,14 @@ void MainWindow::on_actionNew_Plant_triggered()
         }
     }
 }
+void MainWindow::on_actionExit_triggered()
+{
+    QMessageBox::StandardButton reply;
+    reply = QMessageBox::question(this, "Exit", "Are you sure you want to quit?",
+                                  QMessageBox::Yes | QMessageBox::No);
+
+    if (reply == QMessageBox::Yes) {
+        qApp->quit();
+    }
+}
+

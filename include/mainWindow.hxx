@@ -31,6 +31,8 @@ private slots:
     void on_actionNew_Plant_triggered();
 
 
+    void on_actionExit_triggered();
+
 public slots:
 
 private:
