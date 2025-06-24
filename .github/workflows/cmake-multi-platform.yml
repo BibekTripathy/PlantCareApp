@@ -44,21 +44,22 @@ jobs:
     steps:
     - uses: actions/checkout@v4
 
-    - name: Install Qt
-      uses: jurplel/install-qt-action@v4
-
-    - name: Install SQLite3 (Linux)
+    #- name: Install Qt
+    #  uses: jurplel/install-qt-action@v4
+    
+    - name: Install Qt6 and SQLite3 (Linux)
       if: runner.os == 'linux'
       run: |
         sudo apt-get update
-        sudo apt-get install -y sqlite3 libsqlite3-dev
+        sudo apt-get install -y qt6-base-dev qt6-tools-dev qt6-tools-dev-tools sqlite3 libsqlite3-dev
 
-    - name: Install SQLite3 (Windows)
+    - name: Install Qt6 and SQLite3 (Windows)
       if: runner.os == 'windows'
       run: |
         # On Windows, we'll use vcpkg to install SQLite3
         git clone https://github.com/Microsoft/vcpkg.git
         ./vcpkg/bootstrap-vcpkg.bat -disableMetrics
+        ./vcpkg/vcpkg install qtbase:x64-windows
         ./vcpkg/vcpkg install sqlite3:x64-windows
         echo "VCPKG_ROOT=${{ github.workspace }}/vcpkg" >> $GITHUB_ENV
 
