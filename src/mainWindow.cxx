@@ -33,7 +33,7 @@ void MainWindow::showEvent(QShowEvent *event) {
     if (firstShow) {
         firstShow = false;
 
-        QSettings settings("YourCompany", "PlantCareApp");
+        QSettings settings("QtPlantly", "PlantCareApp");
         QString filePath = settings.value("lastDatabase").toString();
 
         bool fileLoaded = false;

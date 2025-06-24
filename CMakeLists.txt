@@ -54,10 +54,16 @@ set(UI_SOURCES
 	ui/editwindow.ui
 )
 
+
 set(CMAKE_AUTOUIC_SEARCH_PATHS ${CMAKE_SOURCE_DIR}/ui)
 
 # Define the executable
 qt_add_executable(PlantCareApp MANUAL_FINALIZATION ${PROJECT_SOURCES} ${HEADER_SOURCES} ${UI_SOURCES})
+
+if(WIN32)
+    set(APP_ICON_RESOURCE_WINDOWS "${CMAKE_CURRENT_SOURCE_DIR}/appicon.rc")
+    target_sources(PlantCareApp PRIVATE ${APP_ICON_RESOURCE_WINDOWS})
+endif()
 
 # Link Dependency Libraries
 target_link_libraries(PlantCareApp PRIVATE Qt6::Widgets)

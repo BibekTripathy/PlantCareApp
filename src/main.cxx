@@ -1,5 +1,6 @@
 #include <iostream>
 #include <QApplication>
+#include <QIcon>
 #include <QFileDialog>
 #include <QString>
 #include <QStyleHints>
@@ -18,6 +19,7 @@ int main(int argc, char *argv[]) {
 	// std::cin.get();
 
 	QApplication app(argc, argv);
+	app.setWindowIcon(QIcon("assets/icons/qtplantly.png"));
     bool isDark = app.styleHints()->colorScheme() == Qt::ColorScheme::Dark;
 
     StyleManager::applyStyle(isDark ? StyleManager::Dark : StyleManager::Light);
