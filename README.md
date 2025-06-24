@@ -30,8 +30,8 @@ Ensure the following are installed on your system:
 
 ```sh
 # Clone the repository
-git clone https://github.com/BibekTripathy/PlantCareApp.git
-cd PlantCareApp
+git clone https://github.com/BibekTripathy/QtPlantly.git
+cd QtPlantly
 
 # Create build directory
 mkdir build
@@ -44,7 +44,7 @@ cmake ..
 cmake --build .
 
 # Run the program
-./bin/PlantCareApp
+./bin/QtPlantly
 ```
 
 ---
@@ -59,7 +59,7 @@ cmake --build .
 
 ## Reporting Issues
 
-If you encounter any bugs or have suggestions for improvements, please open an issue on the [GitHub Issues page](https://github.com/BibekTripathy/PlantCareApp/issues).
+If you encounter any bugs or have suggestions for improvements, please open an issue on the [GitHub Issues page](https://github.com/BibekTripathy/QtPlantly/issues).
 
 ---
 
