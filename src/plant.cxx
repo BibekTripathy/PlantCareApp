@@ -231,7 +231,8 @@ void Plants::fetchData(const std::string& filePath) {
     }
 
     sqlite3_finalize(stmt);
-    showDetails();
+	// Print database to sdt::cout
+    // showDetails();
 }
 
 void Plants::showDetails() {
