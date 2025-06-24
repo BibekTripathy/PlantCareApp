@@ -20,7 +20,7 @@ testData/
 *.obj
 
 # Executables (if built in root accidentally)
-PlantCareApp
+QtPlantly
 *.exe
 *.out
 
