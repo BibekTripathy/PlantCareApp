@@ -73,8 +73,9 @@ target_link_libraries(QtPlantly PRIVATE ${SQLite3_LIBRARIES})
 # Compiler warnings
 target_compile_options(QtPlantly PRIVATE -Wall -Wextra -O2)
 
-# Include Debug Symbols
-set(CMAKE_BUILD_TYPE Debug)
+# Define Build Tyoe
+# set(CMAKE_BUILD_TYPE Debug)
+set(CMAKE_BUILD_TYPE Release)
 
 # Finalize qt6
 if(QT_VERSION_MAJOR EQUAL 6)
