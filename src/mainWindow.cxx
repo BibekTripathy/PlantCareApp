@@ -356,7 +356,7 @@ void MainWindow::on_actionChange_create_database_triggered()
         plants.fetchData(filePath.toStdString());
 
         // Update settings for persistence
-        QSettings settings("YourCompany", "PlantCareApp");
+        QSettings settings("QtPlantly", "PlantCareApp");
         settings.setValue("lastDatabase", filePath);
 
         // Refresh the UI
