@@ -62,7 +62,7 @@ qt_add_executable(QtPlantly MANUAL_FINALIZATION ${PROJECT_SOURCES} ${HEADER_SOUR
 
 if(WIN32)
     set(APP_ICON_RESOURCE_WINDOWS "${CMAKE_CURRENT_SOURCE_DIR}/appicon.rc")
-    target_sources(PlantCareApp PRIVATE ${APP_ICON_RESOURCE_WINDOWS})
+    target_sources(QtPlantly PRIVATE ${APP_ICON_RESOURCE_WINDOWS})
 endif()
 
 # Link Dependency Libraries
