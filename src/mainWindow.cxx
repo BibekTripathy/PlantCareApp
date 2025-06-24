@@ -9,6 +9,8 @@
 #include <QLayoutItem>
 #include <QMessageBox>
 #include <QInputDialog>
+#include <QFileInfo>
+#include <QSettings>
 #include "cardtemplate.hxx"
 #include "mainWindow.hxx"
 #include "editwindow.hxx"
@@ -29,13 +31,34 @@ void MainWindow::showEvent(QShowEvent *event) {
 
     if (firstShow) {
         firstShow = false;
-        secondwindow *dialog = new secondwindow(this);
-        dialog->setModal(true);  
-        
-        if (dialog->exec() == QDialog::Accepted) {
-            QString filePath = dialog->getFilePath();
-            plants.fetchData(filePath.toStdString());
 
+        QSettings settings("YourCompany", "PlantCareApp");
+        QString filePath = settings.value("lastDatabase").toString();
+
+        bool fileLoaded = false;
+
+        if (!filePath.isEmpty()) {
+            QFileInfo checkFile(filePath);
+            if (checkFile.exists() && checkFile.isFile()) {
+                plants.fetchData(filePath.toStdString());
+                fileLoaded = true;
+            }
+        }
+
+        if (!fileLoaded) {
+            secondwindow* dialog = new secondwindow(this);
+            dialog->setModal(true);
+
+            if (dialog->exec() == QDialog::Accepted) {
+                filePath = dialog->getFilePath();
+                plants.fetchData(filePath.toStdString());
+
+                settings.setValue("lastDatabase", filePath);
+                fileLoaded = true;
+            }
+        }
+
+        if (fileLoaded) {
             int containerWidth = ui->scrollArea->viewport()->width();
             int cardWidth = 300;
             int spacing = 20;
