@@ -1,5 +1,5 @@
 cmake_minimum_required(VERSION 3.16)
-project(PlantCareApp LANGUAGES CXX)
+project(QtPlantly LANGUAGES CXX)
 
 # Set C++ standard
 set(CMAKE_CXX_STANDARD 17)
@@ -57,20 +57,20 @@ set(UI_SOURCES
 set(CMAKE_AUTOUIC_SEARCH_PATHS ${CMAKE_SOURCE_DIR}/ui)
 
 # Define the executable
-qt_add_executable(PlantCareApp MANUAL_FINALIZATION ${PROJECT_SOURCES} ${HEADER_SOURCES} ${UI_SOURCES})
+qt_add_executable(QtPlantly MANUAL_FINALIZATION ${PROJECT_SOURCES} ${HEADER_SOURCES} ${UI_SOURCES})
 
 # Link Dependency Libraries
-target_link_libraries(PlantCareApp PRIVATE Qt6::Widgets)
-target_include_directories(PlantCareApp PRIVATE ${SQLite3_INCLUDE_DIRS})
-target_link_libraries(PlantCareApp PRIVATE ${SQLite3_LIBRARIES})
+target_link_libraries(QtPlantly PRIVATE Qt6::Widgets)
+target_include_directories(QtPlantly PRIVATE ${SQLite3_INCLUDE_DIRS})
+target_link_libraries(QtPlantly PRIVATE ${SQLite3_LIBRARIES})
 
 # Compiler warnings
-target_compile_options(PlantCareApp PRIVATE -Wall -Wextra -O2)
+target_compile_options(QtPlantly PRIVATE -Wall -Wextra -O2)
 
 # Include Debug Symbols
 set(CMAKE_BUILD_TYPE Debug)
 
 # Finalize qt6
 if(QT_VERSION_MAJOR EQUAL 6)
-    qt_finalize_executable(PlantCareApp)
+    qt_finalize_executable(QtPlantly)
 endif()
