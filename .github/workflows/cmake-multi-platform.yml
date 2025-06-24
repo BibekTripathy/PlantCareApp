@@ -65,7 +65,7 @@ jobs:
     - name: Install LLVM/Clang (Windows)
       if: runner.os == 'windows'
       run: |
-        choco install llvm -y
+        choco install llvm --version=19.0.0 -y
         echo "C:\Program Files\LLVM\bin" >> $GITHUB_PATH
 
     - name: Set reusable strings
