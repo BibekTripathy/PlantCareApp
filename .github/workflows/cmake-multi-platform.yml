@@ -55,7 +55,7 @@ jobs:
       #  tools: 'tools_cmake'
 
     - name: Install SQLite3 on Windows using vcpkg
-      if: runner.os == 'Windows'
+      if: runner.os == 'windows'
       run: |
         git clone https://github.com/microsoft/vcpkg.git
         .\vcpkg\bootstrap-vcpkg.bat
